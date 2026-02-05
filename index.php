@@ -65,7 +65,7 @@ $resultado = $stmt->get_result();
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriTec - Comida Saludable</title>
+    <title>NutriTc - Comida Saludable</title>
     <link rel="stylesheet" href="css/estilos.css">
     <style>
         .categorias-nav { margin-bottom: 20px; padding: 10px; background-color: #f2f2f2; border-radius: 5px; }
