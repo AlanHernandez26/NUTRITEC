@@ -1,0 +1,320 @@
+/* Reset general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Cuerpo */
+body {
+    background-color: #F1F8F6;
+    color: #1E3932;
+    line-height: 1.6;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Encabezado */
+header {
+    background: linear-gradient(to right, #00704A, #1E3932);
+    color: #ffffff;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInDown 0.8s ease-in-out;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+footer {
+  background-color: #eaf8f5;
+  text-align: center;
+  padding: 20px 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #444;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+nav {
+    margin-top: 1rem;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #A7D8C7;
+}
+
+/* Contenedor de productos */
+.contenedor-productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    animation: fadeIn 0.8s ease-in;
+}
+
+.producto {
+    background-color: #ffffff;
+    border: 1px solid #C8E6DA;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 112, 74, 0.15);
+}
+
+.producto img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.producto h3 {
+    font-size: 1.2rem;
+    margin: 0.8rem 0 0.4rem;
+    color: #00704A;
+}
+
+.producto p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Botón de producto */
+.producto button {
+    background-color: #00704A;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0.3rem 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.producto button:hover {
+    background-color: #005738;
+}
+
+/* Formularios */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+    padding: 0.6rem;
+    border: 1px solid #A7D8C7;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #00704A;
+    outline: none;
+}
+
+/* Botones generales */
+button,
+input[type="submit"] {
+    background-color: #00704A;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #005738;
+}
+
+/* Footer */
+footer {
+    background-color: #E6F4EF;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    animation: fadeIn 0.8s ease;
+}
+
+table th,
+table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+table th {
+    background-color: #1E3932;
+    color: white;
+}
+
+table td button {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.3rem;
+}
+
+.btn-editar, .btn-eliminar {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 2px 4px;
+    font-size: 0.9em;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.btn-editar {
+    background-color: #A7D8C7;
+    color: #1E3932;
+    border: 1px solid #1E3932;
+}
+
+.btn-editar:hover {
+    background-color: #7bcbb0;
+    color: #ffffff;
+    border-color: #1E3932;
+}
+
+.btn-eliminar {
+    background-color: #F6CFCF;
+    color: #8B0000;
+    border: 1px solid #8B0000;
+}
+
+.btn-eliminar:hover {
+    background-color: #dc5c5c;
+    color: white;
+    border-color: #7a0000;
+}
+
+/* Estilos específicos para el formulario de login */
+.form-login {
+    max-width: 400px;
+    margin: 5rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.8s ease;
+}
+
+.form-login h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #1E3932;
+}
+
+.form-login input[type="email"],
+.form-login input[type="password"] {
+    background-color: #ffffff;
+    font-weight: normal;
+    border: 1px solid #A7D8C7;
+}
+
+.form-login input[type="submit"] {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.form-login a {
+    color: #00704A;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.form-login a:hover {
+    text-decoration: underline;
+}
+
+.seccion-usuarios {
+    padding: 2rem;
+    animation: fadeIn 0.8s ease-in;
+}
+
+.seccion-usuarios h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    color: #1E3932;
+}
+
+.acciones-usuarios {
+    margin-bottom: 1rem;
+    text-align: right;
+}
+
+.acciones-usuarios a {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+}
+
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,22 @@
+INSERT INTO usuarios (nombre, correo, password, rol)
+VALUES (
+  'Admin Test',
+  'admin@nutritec.com',
+  'admin123',
+  'admin');
+
+
+(La contraseña admin123 fue generada con password_hash())
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Muy buena decisión. Para lo que planteas (ver productos sin login, pero requerir login para comprar), lo ideal es organizar primero la vista pública (index.php) y luego continuar con:
+
+Paso 4: Crear paneles por rol (admin/gerente/cajero)
+
+Luego: Agregar botón de logout
+
+Más adelante: Agregar el registro de nuevos usuarios si lo deseas
