@@ -118,6 +118,7 @@ $conexion->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="img/nutriteclogo.png" type="image/png">
     <title>Carrito de Compras - NutriTec</title>
     <link rel="stylesheet" href="css/estilos.css">
     <style>

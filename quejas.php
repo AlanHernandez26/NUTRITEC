@@ -33,6 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="img/nutriteclogo.png" type="image/png">
 <?php include 'includes/header.php'; ?>
 
 <section style="padding: 30px; max-width: 600px; margin: auto;">

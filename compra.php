@@ -35,6 +35,7 @@ $producto = $resultado->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <title>Confirmar compra - NutriTec</title>
+        <link rel="icon" href="img/nutriteclogo.png" type="image/png">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>

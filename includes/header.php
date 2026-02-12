@@ -8,7 +8,9 @@ if (isset($_SESSION['carrito'])) {
 <header class="site-header">
   <div class="site-logo">
     <a href="/NUTRITEC/index.php" class="site-logo-link" aria-label="NutriTec">
-      <img src="img/nutriteclogo.png" alt="NutriTec" class="site-logo-img">
+      <div class="logo-container" aria-hidden="false" style="width:80px;height:80px;overflow:hidden;border-radius:6px;flex:0 0 40px;">
+        <img src="img/nutriteclogo.png" alt="NutriTec" class="site-logo-img" style="width:100%;height:100%;display:block;object-fit:contain;">
+      </div>
     </a>
     <span class="site-title">NutriTec</span>
   </div>
