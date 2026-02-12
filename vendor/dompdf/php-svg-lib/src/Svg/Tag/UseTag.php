@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg\Tag;
 
@@ -15,14 +11,14 @@ class UseTag extends AbstractTag
     protected $height;
     protected $instances = 0;
 
-    /** @var AbstractTag */
+    
     protected $reference;
 
     protected function before($attributes)
     {
         $this->instances++;
         if ($this->instances > 1) {
-            //TODO: log circular reference error state
+            
             return;
         }
 
@@ -64,7 +60,7 @@ class UseTag extends AbstractTag
     public function handle($attributes)
     {
         if ($this->instances > 1) {
-            //TODO: log circular reference error state
+            
             return;
         }
 

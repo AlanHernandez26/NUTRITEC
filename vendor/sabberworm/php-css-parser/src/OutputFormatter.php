@@ -5,14 +5,10 @@ namespace Sabberworm\CSS;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\Parsing\OutputException;
 
-/**
- * @internal since 8.8.0
- */
+
 class OutputFormatter
 {
-    /**
-     * @var OutputFormat
-     */
+    
     private $oFormat;
 
     public function __construct(OutputFormat $oFormat)
@@ -20,17 +16,12 @@ class OutputFormatter
         $this->oFormat = $oFormat;
     }
 
-    /**
-     * @param string $sName
-     * @param string|null $sType
-     *
-     * @return string
-     */
+    
     public function space($sName, $sType = null)
     {
         $sSpaceString = $this->oFormat->get("Space$sName");
-        // If $sSpaceString is an array, we have multiple values configured
-        // depending on the type of object the space applies to
+        
+        
         if (is_array($sSpaceString)) {
             if ($sType !== null && isset($sSpaceString[$sType])) {
                 $sSpaceString = $sSpaceString[$sType];
@@ -41,83 +32,61 @@ class OutputFormatter
         return $this->prepareSpace($sSpaceString);
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceAfterRuleName()
     {
         return $this->space('AfterRuleName');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceBeforeRules()
     {
         return $this->space('BeforeRules');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceAfterRules()
     {
         return $this->space('AfterRules');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceBetweenRules()
     {
         return $this->space('BetweenRules');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceBeforeBlocks()
     {
         return $this->space('BeforeBlocks');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceAfterBlocks()
     {
         return $this->space('AfterBlocks');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceBetweenBlocks()
     {
         return $this->space('BetweenBlocks');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceBeforeSelectorSeparator()
     {
         return $this->space('BeforeSelectorSeparator');
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceAfterSelectorSeparator()
     {
         return $this->space('AfterSelectorSeparator');
     }
 
-    /**
-     * @param string $sSeparator
-     *
-     * @return string
-     */
+    
     public function spaceBeforeListArgumentSeparator($sSeparator)
     {
         $spaceForSeparator = $this->oFormat->getSpaceBeforeListArgumentSeparators();
@@ -128,11 +97,7 @@ class OutputFormatter
         return $this->space('BeforeListArgumentSeparator', $sSeparator);
     }
 
-    /**
-     * @param string $sSeparator
-     *
-     * @return string
-     */
+    
     public function spaceAfterListArgumentSeparator($sSeparator)
     {
         $spaceForSeparator = $this->oFormat->getSpaceAfterListArgumentSeparators();
@@ -143,45 +108,29 @@ class OutputFormatter
         return $this->space('AfterListArgumentSeparator', $sSeparator);
     }
 
-    /**
-     * @return string
-     */
+    
     public function spaceBeforeOpeningBrace()
     {
         return $this->space('BeforeOpeningBrace');
     }
 
-    /**
-     * Runs the given code, either swallowing or passing exceptions, depending on the `bIgnoreExceptions` setting.
-     *
-     * @param string $cCode the name of the function to call
-     *
-     * @return string|null
-     */
+    
     public function safely($cCode)
     {
         if ($this->oFormat->get('IgnoreExceptions')) {
-            // If output exceptions are ignored, run the code with exception guards
+            
             try {
                 return $cCode();
             } catch (OutputException $e) {
                 return null;
-            } // Do nothing
+            } 
         } else {
-            // Run the code as-is
+            
             return $cCode();
         }
     }
 
-    /**
-     * Clone of the `implode` function, but calls `render` with the current output format instead of `__toString()`.
-     *
-     * @param string $sSeparator
-     * @param array<array-key, Renderable|string> $aValues
-     * @param bool $bIncreaseLevel
-     *
-     * @return string
-     */
+    
     public function implode($sSeparator, array $aValues, $bIncreaseLevel = false)
     {
         $sResult = '';
@@ -205,11 +154,7 @@ class OutputFormatter
         return $sResult;
     }
 
-    /**
-     * @param string $sString
-     *
-     * @return string
-     */
+    
     public function removeLastSemicolon($sString)
     {
         if ($this->oFormat->get('SemicolonAfterLastRule')) {
@@ -225,12 +170,7 @@ class OutputFormatter
         return implode(';', $sString);
     }
 
-    /**
-     *
-     * @param array<Commentable> $aComments
-     *
-     * @return string
-     */
+    
     public function comments(Commentable $oCommentable)
     {
         if (!$this->oFormat->bRenderComments) {
@@ -248,19 +188,13 @@ class OutputFormatter
         return $sResult;
     }
 
-    /**
-     * @param string $sSpaceString
-     *
-     * @return string
-     */
+    
     private function prepareSpace($sSpaceString)
     {
         return str_replace("\n", "\n" . $this->indent(), $sSpaceString);
     }
 
-    /**
-     * @return string
-     */
+    
     private function indent()
     {
         return str_repeat($this->oFormat->sIndentation, $this->oFormat->getIndentationLevel());

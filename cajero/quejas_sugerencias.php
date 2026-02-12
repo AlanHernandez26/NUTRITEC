@@ -7,7 +7,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'cajero') {
     exit;
 }
 
-// Obtener quejas y sugerencias con usuario (si existe)
+
 $query = "
     SELECT qs.id, qs.tipo, qs.mensaje, qs.creado_en, u.nombre AS nombre_usuario
     FROM quejas_sugerencias qs

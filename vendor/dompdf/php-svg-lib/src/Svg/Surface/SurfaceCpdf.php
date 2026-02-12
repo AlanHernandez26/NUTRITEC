@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg\Surface;
 
@@ -14,13 +10,13 @@ class SurfaceCpdf implements SurfaceInterface
 {
     const DEBUG = false;
 
-    /** @var \Svg\Surface\CPdf */
+    
     private $canvas;
 
     private $width;
     private $height;
 
-    /** @var Style */
+    
     private $style;
 
     public function __construct(Document $doc, $canvas = null)
@@ -37,8 +33,8 @@ class SurfaceCpdf implements SurfaceInterface
             $canvas->fontcache = realpath(dirname($refl->getFileName()) . "/../../fonts/")."/";
         }
 
-        // Flip PDF coordinate system so that the origin is in
-        // the top left rather than the bottom left
+        
+        
         $canvas->transform(array(
             1,  0,
             0, -1,
@@ -112,7 +108,7 @@ class SurfaceCpdf implements SurfaceInterface
     public function beginPath()
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
-        // TODO: Implement beginPath() method.
+        
     }
 
     public function closePath()
@@ -216,7 +212,7 @@ class SurfaceCpdf implements SurfaceInterface
 
             case IMAGETYPE_GIF:
             case IMAGETYPE_BMP:
-                // @todo use cache for BMP and GIF
+                
                 $img = $this->_convert_gif_bmp_to_png($img, $type);
 
             case IMAGETYPE_PNG:
@@ -243,7 +239,7 @@ class SurfaceCpdf implements SurfaceInterface
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
 
-        // FIXME not accurate
+        
         $this->canvas->quadTo($cpx, $cpy, $x, $y);
     }
 
@@ -289,7 +285,7 @@ class SurfaceCpdf implements SurfaceInterface
 
         $canvas = $this->canvas;
 
-        if ($rx <= 0.000001/* && $ry <= 0.000001*/) {
+        if ($rx <= 0.000001) {
             $canvas->rect($x, $y, $w, $h);
 
             return;
@@ -298,33 +294,31 @@ class SurfaceCpdf implements SurfaceInterface
         $rx = min($rx, $w / 2);
         $rx = min($rx, $h / 2);
 
-        /* Define a path for a rectangle with corners rounded by a given radius.
-         * Start from the lower left corner and proceed counterclockwise.
-         */
+        
         $this->moveTo($x + $rx, $y);
 
-        /* Start of the arc segment in the lower right corner */
+        
         $this->lineTo($x + $w - $rx, $y);
 
-        /* Arc segment in the lower right corner */
+        
         $this->arc($x + $w - $rx, $y + $rx, $rx, 270, 360);
 
-        /* Start of the arc segment in the upper right corner */
+        
         $this->lineTo($x + $w, $y + $h - $rx );
 
-        /* Arc segment in the upper right corner */
+        
         $this->arc($x + $w - $rx, $y + $h - $rx, $rx, 0, 90);
 
-        /* Start of the arc segment in the upper left corner */
+        
         $this->lineTo($x + $rx, $y + $h);
 
-        /* Arc segment in the upper left corner */
+        
         $this->arc($x + $rx, $y + $h - $rx, $rx, 90, 180);
 
-        /* Start of the arc segment in the lower left corner */
+        
         $this->lineTo($x , $y + $rx);
 
-        /* Arc segment in the lower left corner */
+        
         $this->arc($x + $rx, $y + $rx, $rx, 180, 270);
     }
 

@@ -1,9 +1,5 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\Renderer;
 
 use Dompdf\Helpers;
@@ -12,18 +8,10 @@ use Dompdf\FrameDecorator\ListBullet as ListBulletFrameDecorator;
 use Dompdf\FrameDecorator\ListBulletImage;
 use Dompdf\Image\Cache;
 
-/**
- * Renders list bullets
- *
- * @package dompdf
- */
+
 class ListBullet extends AbstractRenderer
 {
-    /**
-     * @param $type
-     * @return mixed|string
-     * @deprecated
-     */
+    
     static function get_counter_chars($type)
     {
         static $cache = [];
@@ -69,13 +57,7 @@ class ListBullet extends AbstractRenderer
         return $cache[$type] = "$text.";
     }
 
-    /**
-     * @param int      $n
-     * @param string   $type
-     * @param int|null $pad
-     *
-     * @return string
-     */
+    
     private function make_counter(int $n, string $type, ?int $pad = null): string
     {
         $text = "";
@@ -117,9 +99,7 @@ class ListBullet extends AbstractRenderer
         return "$text.";
     }
 
-    /**
-     * @param ListBulletFrameDecorator $frame
-     */
+    
     function render(Frame $frame)
     {
         $li = $frame->get_parent();
@@ -127,7 +107,7 @@ class ListBullet extends AbstractRenderer
 
         $this->_set_opacity($frame->get_opacity($style->opacity));
 
-        // Don't render bullets twice if the list item was split
+        
         if ($li->is_split_off) {
             return;
         }
@@ -136,8 +116,8 @@ class ListBullet extends AbstractRenderer
         $font_size = $style->font_size;
         $baseline = $this->_canvas->get_font_baseline($font_family, $font_size);
 
-        // Handle list-style-image
-        // If list style image is requested but missing, fall back to predefined types
+        
+        
         if ($frame instanceof ListBulletImage && !Cache::is_broken($img = $frame->get_image_url())) {
             [$x, $y] = $frame->get_position();
             $w = $frame->get_width();
@@ -197,7 +177,7 @@ class ListBullet extends AbstractRenderer
                     $text_width = $this->_dompdf->getFontMetrics()->getTextWidth($text, $font_family, $font_size, $word_spacing, $letter_spacing);
 
                     [$x, $y] = $frame->get_position();
-                    // Correct for static frame width applied by positioner
+                    
                     $x += $frame->get_width() - $text_width;
 
                     $this->_canvas->text($x, $y, $text,

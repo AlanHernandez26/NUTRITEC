@@ -1,18 +1,10 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib\Table\Type;
 use FontLib\Table\Table;
 
-/**
- * `cmap` font table.
- *
- * @package php-font-lib
- */
+
 class cmap extends Table {
   private static $header_format = array(
     "version"         => self::uint16,
@@ -152,7 +144,7 @@ class cmap extends Table {
   
           $endCode = $font->readUInt16Many($segCount);
   
-          $font->readUInt16(); // reservedPad
+          $font->readUInt16(); 
   
           $startCode = $font->readUInt16Many($segCount);
           $idDelta   = $font->readInt16Many($segCount);
@@ -255,7 +247,7 @@ class cmap extends Table {
       }
     }
 
-    ksort($newGlyphIndexArray); // Sort by char code
+    ksort($newGlyphIndexArray); 
 
     $segments = array();
 
@@ -307,12 +299,12 @@ class cmap extends Table {
 
     $subtables = array(
       array(
-        // header
-        "platformID"         => 3, // Unicode
+        
+        "platformID"         => 3, 
         "platformSpecificID" => 1,
         "offset"             => null,
 
-        // subtable
+        
         "format"             => 4,
         "length"             => null,
         "language"           => 0,
@@ -337,12 +329,12 @@ class cmap extends Table {
 
     $length = $font->pack(self::$header_format, $data);
 
-    $subtable_headers_size   = $data["numberSubtables"] * 8; // size of self::$subtable_header_format
+    $subtable_headers_size   = $data["numberSubtables"] * 8; 
     $subtable_headers_offset = $font->pos();
 
     $length += $font->write(str_repeat("\0", $subtable_headers_size), $subtable_headers_size);
 
-    // write subtables data
+    
     foreach ($data["subtables"] as $i => $subtable) {
       $length_before                   = $length;
       $data["subtables"][$i]["offset"] = $length;
@@ -354,7 +346,7 @@ class cmap extends Table {
 
       $segCount = $subtable["segCount"];
       $length += $font->w(array(self::uint16, $segCount), $subtable["endCode"]);
-      $length += $font->writeUInt16(0); // reservedPad
+      $length += $font->writeUInt16(0); 
       $length += $font->w(array(self::uint16, $segCount), $subtable["startCode"]);
       $length += $font->w(array(self::int16, $segCount), $subtable["idDelta"]);
       $length += $font->w(array(self::uint16, $segCount), $subtable["idRangeOffset"]);
@@ -369,7 +361,7 @@ class cmap extends Table {
       $font->seek($after_subtable);
     }
 
-    // write subtables headers
+    
     $font->seek($subtable_headers_offset);
     foreach ($data["subtables"] as $subtable) {
       $font->pack(self::$subtable_header_format, $subtable);

@@ -8,7 +8,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'gerente') {
 }
 
 $mensaje = "";
-// Eliminar producto si se recibe id por GET
+
 if (isset($_GET['eliminar'])) {
     $id_eliminar = intval($_GET['eliminar']);
     $stmt_del = $conexion->prepare("DELETE FROM productos WHERE id = ?");
@@ -20,7 +20,7 @@ if (isset($_GET['eliminar'])) {
     }
 }
 
-// Obtener productos
+
 $result = $conexion->query("SELECT * FROM productos ORDER BY id DESC");
 
 ?>

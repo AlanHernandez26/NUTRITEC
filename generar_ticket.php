@@ -13,7 +13,7 @@ if (!isset($_GET['pedido_id'])) {
 $pedido_id = intval($_GET['pedido_id']);
 $usuario_id = $_SESSION['usuario']['id'];
 
-// Obtener datos del pedido
+
 $sql = "SELECT p.id, p.total, p.metodo_pago, p.creado_en, u.nombre AS cliente
         FROM pedidos p
         JOIN usuarios u ON p.usuario_id = u.id
@@ -30,7 +30,7 @@ if ($resultado->num_rows === 0) {
 
 $pedido = $resultado->fetch_assoc();
 
-// Obtener detalles del pedido
+
 $sql_detalles = "SELECT pr.nombre, dp.cantidad, dp.subtotal
                  FROM detalles_pedido dp
                  JOIN productos pr ON dp.producto_id = pr.id
@@ -40,7 +40,7 @@ $stmt_detalle->bind_param("i", $pedido_id);
 $stmt_detalle->execute();
 $detalles = $stmt_detalle->get_result();
 
-// Construir HTML del ticket
+
 $html = '<h1 style="text-align:center;">NutriTec - Ticket de Compra</h1>';
 $html .= '<p><strong>Cliente:</strong> ' . htmlspecialchars($pedido['cliente']) . '</p>';
 $html .= '<p><strong>Pedido ID:</strong> ' . $pedido['id'] . '</p>';
@@ -60,7 +60,7 @@ while ($item = $detalles->fetch_assoc()) {
 $html .= '</tbody></table>';
 $html .= '<h3>Total: $' . number_format($pedido['total'], 2) . '</h3>';
 
-// Crear PDF
+
 $dompdf = new Dompdf();
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');

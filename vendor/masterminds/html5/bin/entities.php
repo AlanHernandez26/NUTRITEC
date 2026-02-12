@@ -1,9 +1,7 @@
 <?php
-/**
- * Fetch the entities.json file and convert to PHP datastructure.
- */
 
-// The URL to the official entities JSON file.
+
+
 $ENTITIES_URL = 'http://www.w3.org/TR/2012/CR-html5-20121217/entities.json';
 
 $payload = file_get_contents($ENTITIES_URL);
@@ -23,4 +21,4 @@ class Entities {
 var_export($table);
 echo ';
 }' . PHP_EOL;
-//print serialize($table);
+

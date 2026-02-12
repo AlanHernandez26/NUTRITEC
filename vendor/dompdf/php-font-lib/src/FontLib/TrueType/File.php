@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib\TrueType;
 
@@ -16,18 +12,12 @@ use FontLib\Table\Type\glyf;
 use FontLib\Table\Type\name;
 use FontLib\Table\Type\nameRecord;
 
-/**
- * TrueType font file.
- *
- * @package php-font-lib
- */
+
 class File extends BinaryStream {
-  /**
-   * @var Header
-   */
+  
   public $header = array();
 
-  private $tableOffset = 0; // Used for TTC
+  private $tableOffset = 0; 
 
   private static $raw = false;
 
@@ -103,7 +93,7 @@ class File extends BinaryStream {
   private function uniord (string $c, ?string $encoding = null) {
     if (function_exists("mb_ord")) {
       if (PHP_VERSION_ID < 80000 && $encoding === null) {
-          // in PHP < 8 the encoding argument, if supplied, must be a valid encoding
+          
           $encoding = "UTF-8";
       }
       return mb_ord($c, $encoding);
@@ -118,42 +108,42 @@ class File extends BinaryStream {
     $bytes = [];
     $numbytes = 1;
     for ($i = 0; $i < $length; $i++) {
-      $o = \ord($c[$i]); // get one string character at time
-      if (\count($bytes) === 0) { // get starting octect
+      $o = \ord($c[$i]); 
+      if (\count($bytes) === 0) { 
         if ($o <= 0x7F) {
           $ord = $o;
           $numbytes = 1;
-        } elseif (($o >> 0x05) === 0x06) { // 2 bytes character (0x06 = 110 BIN)
+        } elseif (($o >> 0x05) === 0x06) { 
           $bytes[] = ($o - 0xC0) << 0x06;
           $numbytes = 2;
-        } elseif (($o >> 0x04) === 0x0E) { // 3 bytes character (0x0E = 1110 BIN)
+        } elseif (($o >> 0x04) === 0x0E) { 
           $bytes[] = ($o - 0xE0) << 0x0C;
           $numbytes = 3;
-        } elseif (($o >> 0x03) === 0x1E) { // 4 bytes character (0x1E = 11110 BIN)
+        } elseif (($o >> 0x03) === 0x1E) { 
           $bytes[] = ($o - 0xF0) << 0x12;
           $numbytes = 4;
         } else {
           $ord = false;
           break;
         }
-      } elseif (($o >> 0x06) === 0x02) { // bytes 2, 3 and 4 must start with 0x02 = 10 BIN
+      } elseif (($o >> 0x06) === 0x02) { 
           $bytes[] = $o - 0x80;
           if (\count($bytes) === $numbytes) {
-            // compose UTF-8 bytes to a single unicode value
+            
             $o = $bytes[0];
             for ($j = 1; $j < $numbytes; $j++) {
               $o += ($bytes[$j] << (($numbytes - $j - 1) * 0x06));
             }
             if ((($o >= 0xD800) and ($o <= 0xDFFF)) or ($o >= 0x10FFFF)) {
-              // The definition of UTF-8 prohibits encoding character numbers between
-              // U+D800 and U+DFFF, which are reserved for use with the UTF-16
-              // encoding form (as surrogate pairs) and do not directly represent
-              // characters.
+              
+              
+              
+              
               return false;
             } else {
-              $ord = $o; // add char to array
+              $ord = $o; 
             }
-            // reset data for next char
+            
             $bytes = [];
             $numbytes = 1;
           }
@@ -294,8 +284,8 @@ class File extends BinaryStream {
     }
 
     $gids = array(
-      0, // .notdef
-      1, // .null
+      0, 
+      1, 
     );
 
     foreach ($subset as $code) {
@@ -307,14 +297,14 @@ class File extends BinaryStream {
       $gids[$gid] = $gid;
     }
 
-    /** @var glyf $glyf */
+    
     $glyf = $this->getTableObject("glyf");
     if ($glyf) {
       $gids = $glyf->getGlyphIDs($gids);
       sort($gids);
       $this->glyph_subset = $gids;
     }
-    $this->glyph_all    = array_values($glyphIndexArray); // FIXME
+    $this->glyph_all    = array_values($glyphIndexArray); 
   }
 
   function getSubset() {
@@ -333,11 +323,11 @@ class File extends BinaryStream {
       $tags = array_keys($this->directory);
     }
 
-    $n          = 16; // @todo
+    $n          = 16; 
 
     Font::d("Tables : " . implode(", ", $tags));
 
-    /** @var DirectoryEntry[] $entries */
+    
     $entries = array();
     foreach ($tags as $tag) {
       if (!isset($this->directory[$tag])) {
@@ -401,7 +391,7 @@ class File extends BinaryStream {
     $class = "FontLib\\$type\\TableDirectoryEntry";
 
     for ($i = 0; $i < $this->header->data["numTables"]; $i++) {
-      /** @var TableDirectoryEntry $entry */
+      
       $entry = new $class($this);
       $entry->parse();
 
@@ -429,18 +419,14 @@ class File extends BinaryStream {
       $class = "FontLib\\Table\\Table";
     }
 
-    /** @var Table $table */
+    
     $table = new $class($this->directory[$tag]);
     $table->parse();
 
     $this->data[$tag] = $table;
   }
 
-  /**
-   * @param $name
-   *
-   * @return Table
-   */
+  
   public function getTableObject($name) {
     if (\array_key_exists($name, $this->data)) {
       return $this->data[$name];
@@ -480,15 +466,9 @@ class File extends BinaryStream {
     $afm->write($file, $encoding);
   }
 
-  /**
-   * Get a specific name table string value from its ID
-   *
-   * @param int $nameID The name ID
-   *
-   * @return string|null
-   */
+  
   function getNameTableString($nameID) {
-    /** @var nameRecord[] $records */
+    
     $records = $this->getData("name", "records");
 
     if (!isset($records[$nameID])) {
@@ -498,74 +478,42 @@ class File extends BinaryStream {
     return $records[$nameID]->string;
   }
 
-  /**
-   * Get font copyright
-   *
-   * @return string|null
-   */
+  
   function getFontCopyright() {
     return $this->getNameTableString(name::NAME_COPYRIGHT);
   }
 
-  /**
-   * Get font name
-   *
-   * @return string|null
-   */
+  
   function getFontName() {
     return $this->getNameTableString(name::NAME_NAME);
   }
 
-  /**
-   * Get font subfamily
-   *
-   * @return string|null
-   */
+  
   function getFontSubfamily() {
     return $this->getNameTableString(name::NAME_SUBFAMILY);
   }
 
-  /**
-   * Get font subfamily ID
-   *
-   * @return string|null
-   */
+  
   function getFontSubfamilyID() {
     return $this->getNameTableString(name::NAME_SUBFAMILY_ID);
   }
 
-  /**
-   * Get font full name
-   *
-   * @return string|null
-   */
+  
   function getFontFullName() {
     return $this->getNameTableString(name::NAME_FULL_NAME);
   }
 
-  /**
-   * Get font version
-   *
-   * @return string|null
-   */
+  
   function getFontVersion() {
     return $this->getNameTableString(name::NAME_VERSION);
   }
 
-  /**
-   * Get font weight
-   *
-   * @return string|null
-   */
+  
   function getFontWeight() {
     return $this->getTableObject("OS/2")->data["usWeightClass"];
   }
 
-  /**
-   * Get font Postscript name
-   *
-   * @return string|null
-   */
+  
   function getFontPostscriptName() {
     return $this->getNameTableString(name::NAME_POSTSCRIPT_NAME);
   }

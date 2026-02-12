@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg\Tag;
 
@@ -11,8 +7,8 @@ use Svg\Surface\SurfaceInterface;
 
 class Path extends Shape
 {
-    // kindly borrowed from fabric.util.parsePath.
-    /* @see https://github.com/fabricjs/fabric.js/blob/master/src/util/path.js#L664 */
+    
+    
     const NUMBER_PATTERN = '([-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?)\s*';
     const COMMA_PATTERN = '(?:\s+,?\s*|,\s*)?';
     const FLAG_PATTERN = '([01])';
@@ -59,7 +55,7 @@ class Path extends Shape
             if (count($c) == 3) {
                 $commandLower = strtolower($c[1]);
 
-                // arcs have special flags that apparently don't require spaces.
+                
                 if ($commandLower === 'a' && preg_match_all(static::ARC_REGEXP, $c[2], $matches, PREG_PATTERN_ORDER)) {
                     $numberOfMatches = count($matches[0]);
                     for ($k = 0; $k < $numberOfMatches; ++$k) {
@@ -122,57 +118,57 @@ class Path extends Shape
         $path = static::parse($attributes['d']);
         $surface = $this->document->getSurface();
 
-        // From https://github.com/kangax/fabric.js/blob/master/src/shapes/path.class.js
-        $current = null; // current instruction
+        
+        $current = null; 
         $previous = null;
         $subpathStartX = 0;
         $subpathStartY = 0;
-        $x = 0; // current x
-        $y = 0; // current y
-        $controlX = 0; // current control point x
-        $controlY = 0; // current control point y
+        $x = 0; 
+        $y = 0; 
+        $controlX = 0; 
+        $controlY = 0; 
         $tempX = null;
         $tempY = null;
         $tempControlX = null;
         $tempControlY = null;
-        $l = 0; //-((this.width / 2) + $this.pathOffset.x),
-        $t = 0; //-((this.height / 2) + $this.pathOffset.y),
+        $l = 0; 
+        $t = 0; 
 
         foreach ($path as $current) {
-            switch ($current[0]) { // first letter
-                case 'l': // lineto, relative
+            switch ($current[0]) { 
+                case 'l': 
                     $x += $current[1];
                     $y += $current[2];
                     $surface->lineTo($x + $l, $y + $t);
                     break;
 
-                case 'L': // lineto, absolute
+                case 'L': 
                     $x = $current[1];
                     $y = $current[2];
                     $surface->lineTo($x + $l, $y + $t);
                     break;
 
-                case 'h': // horizontal lineto, relative
+                case 'h': 
                     $x += $current[1];
                     $surface->lineTo($x + $l, $y + $t);
                     break;
 
-                case 'H': // horizontal lineto, absolute
+                case 'H': 
                     $x = $current[1];
                     $surface->lineTo($x + $l, $y + $t);
                     break;
 
-                case 'v': // vertical lineto, relative
+                case 'v': 
                     $y += $current[1];
                     $surface->lineTo($x + $l, $y + $t);
                     break;
 
-                case 'V': // verical lineto, absolute
+                case 'V': 
                     $y = $current[1];
                     $surface->lineTo($x + $l, $y + $t);
                     break;
 
-                case 'm': // moveTo, relative
+                case 'm': 
                     $x += $current[1];
                     $y += $current[2];
                     $subpathStartX = $x;
@@ -180,7 +176,7 @@ class Path extends Shape
                     $surface->moveTo($x + $l, $y + $t);
                     break;
 
-                case 'M': // moveTo, absolute
+                case 'M': 
                     $x = $current[1];
                     $y = $current[2];
                     $subpathStartX = $x;
@@ -188,16 +184,16 @@ class Path extends Shape
                     $surface->moveTo($x + $l, $y + $t);
                     break;
 
-                case 'c': // bezierCurveTo, relative
+                case 'c': 
                     $tempX = $x + $current[5];
                     $tempY = $y + $current[6];
                     $controlX = $x + $current[3];
                     $controlY = $y + $current[4];
                     $surface->bezierCurveTo(
-                        $x + $current[1] + $l, // x1
-                        $y + $current[2] + $t, // y1
-                        $controlX + $l, // x2
-                        $controlY + $t, // y2
+                        $x + $current[1] + $l, 
+                        $y + $current[2] + $t, 
+                        $controlX + $l, 
+                        $controlY + $t, 
                         $tempX + $l,
                         $tempY + $t
                     );
@@ -205,7 +201,7 @@ class Path extends Shape
                     $y = $tempY;
                     break;
 
-                case 'C': // bezierCurveTo, absolute
+                case 'C': 
                     $x = $current[5];
                     $y = $current[6];
                     $controlX = $current[3];
@@ -220,19 +216,19 @@ class Path extends Shape
                     );
                     break;
 
-                case 's': // shorthand cubic bezierCurveTo, relative
+                case 's': 
 
-                    // transform to absolute x,y
+                    
                     $tempX = $x + $current[3];
                     $tempY = $y + $current[4];
 
                     if (!preg_match('/[CcSs]/', $previous[0])) {
-                        // If there is no previous command or if the previous command was not a C, c, S, or s,
-                        // the control point is coincident with the current point
+                        
+                        
                         $controlX = $x;
                         $controlY = $y;
                     } else {
-                        // calculate reflection of previous control points
+                        
                         $controlX = 2 * $x - $controlX;
                         $controlY = 2 * $y - $controlY;
                     }
@@ -245,10 +241,10 @@ class Path extends Shape
                         $tempX + $l,
                         $tempY + $t
                     );
-                    // set control point to 2nd one of this command
-                    // "... the first control point is assumed to be
-                    // the reflection of the second control point on
-                    // the previous command relative to the current point."
+                    
+                    
+                    
+                    
                     $controlX = $x + $current[1];
                     $controlY = $y + $current[2];
 
@@ -256,17 +252,17 @@ class Path extends Shape
                     $y = $tempY;
                     break;
 
-                case 'S': // shorthand cubic bezierCurveTo, absolute
+                case 'S': 
                     $tempX = $current[3];
                     $tempY = $current[4];
 
                     if (!preg_match('/[CcSs]/', $previous[0])) {
-                        // If there is no previous command or if the previous command was not a C, c, S, or s,
-                        // the control point is coincident with the current point
+                        
+                        
                         $controlX = $x;
                         $controlY = $y;
                     } else {
-                        // calculate reflection of previous control points
+                        
                         $controlX = 2 * $x - $controlX;
                         $controlY = 2 * $y - $controlY;
                     }
@@ -282,17 +278,17 @@ class Path extends Shape
                     $x = $tempX;
                     $y = $tempY;
 
-                    // set control point to 2nd one of this command
-                    // "... the first control point is assumed to be
-                    // the reflection of the second control point on
-                    // the previous command relative to the current point."
+                    
+                    
+                    
+                    
                     $controlX = $current[1];
                     $controlY = $current[2];
 
                     break;
 
-                case 'q': // quadraticCurveTo, relative
-                    // transform to absolute x,y
+                case 'q': 
+                    
                     $tempX = $x + $current[3];
                     $tempY = $y + $current[4];
 
@@ -309,7 +305,7 @@ class Path extends Shape
                     $y = $tempY;
                     break;
 
-                case 'Q': // quadraticCurveTo, absolute
+                case 'Q': 
                     $tempX = $current[3];
                     $tempY = $current[4];
 
@@ -325,13 +321,13 @@ class Path extends Shape
                     $controlY = $current[2];
                     break;
 
-                case 't': // shorthand quadraticCurveTo, relative
+                case 't': 
 
-                    // transform to absolute x,y
+                    
                     $tempX = $x + $current[1];
                     $tempY = $y + $current[2];
 
-                    // calculate reflection of previous control points
+                    
                     if (preg_match('/[QqT]/', $previous[0])) {
                         $controlX = 2 * $x - $controlX;
                         $controlY = 2 * $y - $controlY;
@@ -360,7 +356,7 @@ class Path extends Shape
                     $tempX = $current[1];
                     $tempY = $current[2];
 
-                    // calculate reflection of previous control points
+                    
                     if (preg_match('/[QqTt]/', $previous[0])) {
                         $controlX = 2 * $x - $controlX;
                         $controlY = 2 * $y - $controlY;
@@ -399,7 +395,7 @@ class Path extends Shape
                     break;
 
                 case 'A':
-                    // TODO: optimize this
+                    
                     $this->drawArc(
                         $surface,
                         $x + $l,
@@ -514,7 +510,7 @@ class Path extends Shape
             }
         }
 
-        // $Convert $into $cubic $bezier $segments <= 90deg
+        
         $segments = ceil(abs($dtheta / M_PI * 2));
         $result = array();
         $mDelta = $dtheta / $segments;

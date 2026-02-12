@@ -1,19 +1,19 @@
 <?php
 session_start();
 
-// Solo admins pueden acceder
+
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
     header('Location: login.php');
     exit;
 }
 
-// Conexión
+
 $conn = new mysqli("localhost", "root", "", "nutritec");
 if ($conn->connect_error) {
     die("Error en conexión: " . $conn->connect_error);
 }
 
-// Crear nuevo usuario
+
 $mensaje = "";
 if (isset($_POST['crear'])) {
     $nombre = trim($_POST['nombre']);
@@ -21,7 +21,7 @@ if (isset($_POST['crear'])) {
     $rol = $_POST['rol'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Validar si el correo ya existe
+    
     $check = $conn->prepare("SELECT id FROM usuarios WHERE correo = ?");
     $check->bind_param("s", $correo);
     $check->execute();
@@ -39,7 +39,7 @@ if (isset($_POST['crear'])) {
     $check->close();
 }
 
-// Editar usuario
+
 if (isset($_POST['editar'])) {
     $id = intval($_POST['id']);
     $rol = $_POST['rol'];
@@ -52,7 +52,7 @@ if (isset($_POST['editar'])) {
     exit;
 }
 
-// Eliminar usuario
+
 if (isset($_POST['eliminar'])) {
     $id = intval($_POST['id']);
 
@@ -64,7 +64,7 @@ if (isset($_POST['eliminar'])) {
     exit;
 }
 
-// Consultas
+
 $usuarios_con_rol = $conn->query("SELECT * FROM usuarios WHERE rol IS NOT NULL AND rol != ''");
 $clientes = $conn->query("SELECT * FROM usuarios WHERE rol IS NULL OR rol = ''");
 ?>
@@ -78,18 +78,18 @@ $clientes = $conn->query("SELECT * FROM usuarios WHERE rol IS NULL OR rol = ''")
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: 
             margin: 0;
             padding: 0;
         }
         header {
-            background: linear-gradient(to right, #00704A, #1E3932);
-            color: #fff;
+            background: linear-gradient(to right, 
+            color: 
             padding: 10px 0;
             text-align: center;
         }
         nav a {
-            color: #fff;
+            color: 
             margin: 0 15px;
             text-decoration: none;
         }
@@ -106,10 +106,10 @@ $clientes = $conn->query("SELECT * FROM usuarios WHERE rol IS NULL OR rol = ''")
         th, td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid 
         }
         th {
-            background-color: #f2f2f2;
+            background-color: 
         }
         .btn-editar, .btn-eliminar {
             padding: 5px 10px;
@@ -117,11 +117,11 @@ $clientes = $conn->query("SELECT * FROM usuarios WHERE rol IS NULL OR rol = ''")
             cursor: pointer;
         }
         .btn-editar {
-            background-color: #4CAF50;
+            background-color: 
             color: white;
         }
         .btn-eliminar {
-            background-color: #f44336;
+            background-color: 
             color: white;
         }
         form label {
@@ -135,15 +135,15 @@ $clientes = $conn->query("SELECT * FROM usuarios WHERE rol IS NULL OR rol = ''")
         .mensaje {
             padding: 10px;
             margin-bottom: 20px;
-            background-color: #e0ffe0;
-            border: 1px solid #8bc34a;
+            background-color: 
+            border: 1px solid 
             border-radius: 5px;
-            color: #33691e;
+            color: 
         }
         .error {
-            background-color: #ffdddd;
-            border: 1px solid #e53935;
-            color: #b71c1c;
+            background-color: 
+            border: 1px solid 
+            color: 
         }
     </style>
 </head>

@@ -11,42 +11,19 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Rule\Rule;
 
-/**
- * This class is a container for individual 'Rule's.
- *
- * The most common form of a rule set is one constrained by a selector, i.e., a `DeclarationBlock`.
- * However, unknown `AtRule`s (like `@font-face`) are rule sets as well.
- *
- * If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)`
- * (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
- */
+
 abstract class RuleSet implements Renderable, Commentable
 {
-    /**
-     * the rules in this rule set, using the property name as the key,
-     * with potentially multiple rules per property name.
-     *
-     * @var array<string, array<int<0, max>, Rule>>
-     */
+    
     private $aRules;
 
-    /**
-     * @var int
-     *
-     * @internal since 8.8.0
-     */
+    
     protected $iLineNo;
 
-    /**
-     * @var array<array-key, Comment>
-     *
-     * @internal since 8.8.0
-     */
+    
     protected $aComments;
 
-    /**
-     * @param int $iLineNo
-     */
+    
     public function __construct($iLineNo = 0)
     {
         $this->aRules = [];
@@ -54,14 +31,7 @@ abstract class RuleSet implements Renderable, Commentable
         $this->aComments = [];
     }
 
-    /**
-     * @return void
-     *
-     * @throws UnexpectedTokenException
-     * @throws UnexpectedEOFException
-     *
-     * @internal since V8.8.0
-     */
+    
     public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet)
     {
         while ($oParserState->comes(';')) {
@@ -79,7 +49,7 @@ abstract class RuleSet implements Renderable, Commentable
                 } catch (UnexpectedTokenException $e) {
                     try {
                         $sConsume = $oParserState->consumeUntil(["\n", ";", '}'], true);
-                        // We need to “unfind” the matches to the end of the ruleSet as this will be matched later
+                        
                         if ($oParserState->streql(substr($sConsume, -1), '}')) {
                             $oParserState->backtrack(1);
                         } else {
@@ -88,7 +58,7 @@ abstract class RuleSet implements Renderable, Commentable
                             }
                         }
                     } catch (UnexpectedTokenException $e) {
-                        // We’ve reached the end of the document. Just close the RuleSet.
+                        
                         return;
                     }
                 }
@@ -102,19 +72,13 @@ abstract class RuleSet implements Renderable, Commentable
         $oParserState->consume('}');
     }
 
-    /**
-     * @return int
-     */
+    
     public function getLineNo()
     {
         return $this->iLineNo;
     }
 
-    /**
-     * @param Rule|null $oSibling
-     *
-     * @return void
-     */
+    
     public function addRule(Rule $oRule, $oSibling = null)
     {
         $sRule = $oRule->getRule();
@@ -132,7 +96,7 @@ abstract class RuleSet implements Renderable, Commentable
             }
         }
         if ($oRule->getLineNo() === 0 && $oRule->getColNo() === 0) {
-            //this node is added manually, give it the next best line
+            
             $rules = $this->getRules();
             $pos = count($rules);
             if ($pos > 0) {
@@ -144,32 +108,17 @@ abstract class RuleSet implements Renderable, Commentable
         array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
     }
 
-    /**
-     * Returns all rules matching the given rule name
-     *
-     * @example $oRuleSet->getRules('font') // returns array(0 => $oRule, …) or array().
-     *
-     * @example $oRuleSet->getRules('font-')
-     *          //returns an array of all rules either beginning with font- or matching font.
-     *
-     * @param Rule|string|null $mRule
-     *        Pattern to search for. If null, returns all rules.
-     *        If the pattern ends with a dash, all rules starting with the pattern are returned
-     *        as well as one matching the pattern with the dash excluded.
-     *        Passing a Rule behaves like calling `getRules($mRule->getRule())`.
-     *
-     * @return array<int, Rule>
-     */
+    
     public function getRules($mRule = null)
     {
         if ($mRule instanceof Rule) {
             $mRule = $mRule->getRule();
         }
-        /** @var array<int, Rule> $aResult */
+        
         $aResult = [];
         foreach ($this->aRules as $sName => $aRules) {
-            // Either no search rule is given or the search rule matches the found rule exactly
-            // or the search rule ends in “-” and the found rule starts with the search rule.
+            
+            
             if (
                 !$mRule || $sName === $mRule
                 || (
@@ -189,13 +138,7 @@ abstract class RuleSet implements Renderable, Commentable
         return $aResult;
     }
 
-    /**
-     * Overrides all the rules of this set.
-     *
-     * @param array<array-key, Rule> $aRules The rules to override with.
-     *
-     * @return void
-     */
+    
     public function setRules(array $aRules)
     {
         $this->aRules = [];
@@ -204,24 +147,10 @@ abstract class RuleSet implements Renderable, Commentable
         }
     }
 
-    /**
-     * Returns all rules matching the given pattern and returns them in an associative array with the rule’s name
-     * as keys. This method exists mainly for backwards-compatibility and is really only partially useful.
-     *
-     * Note: This method loses some information: Calling this (with an argument of `background-`) on a declaration block
-     * like `{ background-color: green; background-color; rgba(0, 127, 0, 0.7); }` will only yield an associative array
-     * containing the rgba-valued rule while `getRules()` would yield an indexed array containing both.
-     *
-     * @param Rule|string|null $mRule $mRule
-     *        Pattern to search for. If null, returns all rules. If the pattern ends with a dash,
-     *        all rules starting with the pattern are returned as well as one matching the pattern with the dash
-     *        excluded. Passing a Rule behaves like calling `getRules($mRule->getRule())`.
-     *
-     * @return array<string, Rule>
-     */
+    
     public function getRulesAssoc($mRule = null)
     {
-        /** @var array<string, Rule> $aResult */
+        
         $aResult = [];
         foreach ($this->getRules($mRule) as $oRule) {
             $aResult[$oRule->getRule()] = $oRule;
@@ -229,22 +158,7 @@ abstract class RuleSet implements Renderable, Commentable
         return $aResult;
     }
 
-    /**
-     * Removes a rule from this RuleSet. This accepts all the possible values that `getRules()` accepts.
-     *
-     * If given a Rule, it will only remove this particular rule (by identity).
-     * If given a name, it will remove all rules by that name.
-     *
-     * Note: this is different from pre-v.2.0 behaviour of PHP-CSS-Parser, where passing a Rule instance would
-     * remove all rules with the same name. To get the old behaviour, use `removeRule($oRule->getRule())`.
-     *
-     * @param Rule|string|null $mRule
-     *        pattern to remove. If $mRule is null, all rules are removed. If the pattern ends in a dash,
-     *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
-     *        excluded. Passing a Rule behaves matches by identity.
-     *
-     * @return void
-     */
+    
     public function removeRule($mRule)
     {
         if ($mRule instanceof Rule) {
@@ -259,9 +173,9 @@ abstract class RuleSet implements Renderable, Commentable
             }
         } else {
             foreach ($this->aRules as $sName => $aRules) {
-                // Either no search rule is given or the search rule matches the found rule exactly
-                // or the search rule ends in “-” and the found rule starts with the search rule or equals it
-                // (without the trailing dash).
+                
+                
+                
                 if (
                     !$mRule || $sName === $mRule
                     || (strrpos($mRule, '-') === strlen($mRule) - strlen('-')
@@ -273,19 +187,13 @@ abstract class RuleSet implements Renderable, Commentable
         }
     }
 
-    /**
-     * @return string
-     *
-     * @deprecated in V8.8.0, will be removed in V9.0.0. Use `render` instead.
-     */
+    
     public function __toString()
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
+    
     protected function renderRules(OutputFormat $oOutputFormat)
     {
         $sResult = '';
@@ -308,36 +216,26 @@ abstract class RuleSet implements Renderable, Commentable
         }
 
         if (!$bIsFirst) {
-            // Had some output
+            
             $sResult .= $oOutputFormat->spaceAfterRules();
         }
 
         return $oOutputFormat->removeLastSemicolon($sResult);
     }
 
-    /**
-     * @param array<string, Comment> $aComments
-     *
-     * @return void
-     */
+    
     public function addComments(array $aComments)
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
 
-    /**
-     * @return array<string, Comment>
-     */
+    
     public function getComments()
     {
         return $this->aComments;
     }
 
-    /**
-     * @param array<string, Comment> $aComments
-     *
-     * @return void
-     */
+    
     public function setComments(array $aComments)
     {
         $this->aComments = $aComments;

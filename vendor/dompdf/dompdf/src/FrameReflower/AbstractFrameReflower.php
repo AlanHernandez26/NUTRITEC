@@ -1,9 +1,5 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\FrameReflower;
 
 use Dompdf\Css\Content\Attr;
@@ -20,42 +16,20 @@ use Dompdf\Frame\Factory;
 use Dompdf\FrameDecorator\AbstractFrameDecorator;
 use Dompdf\FrameDecorator\Block;
 
-/**
- * Base reflower class
- *
- * Reflower objects are responsible for determining the width and height of
- * individual frames.  They also create line and page breaks as necessary.
- *
- * @package dompdf
- */
+
 abstract class AbstractFrameReflower
 {
 
-    /**
-     * Frame for this reflower
-     *
-     * @var AbstractFrameDecorator
-     */
+    
     protected $_frame;
 
-    /**
-     * Cached min/max child size
-     *
-     * @var array
-     */
+    
     protected $_min_max_child_cache;
 
-    /**
-     * Cached min/max size
-     *
-     * @var array
-     */
+    
     protected $_min_max_cache;
 
-    /**
-     * AbstractFrameReflower constructor.
-     * @param AbstractFrameDecorator $frame
-     */
+    
     function __construct(AbstractFrameDecorator $frame)
     {
         $this->_frame = $frame;
@@ -63,9 +37,7 @@ abstract class AbstractFrameReflower
         $this->_min_max_cache = null;
     }
 
-    /**
-     * @return Dompdf
-     */
+    
     function get_dompdf()
     {
         return $this->_frame->get_dompdf();
@@ -77,11 +49,7 @@ abstract class AbstractFrameReflower
         $this->_min_max_cache = null;
     }
 
-    /**
-     * Determine the actual containing block for absolute and fixed position.
-     *
-     * https://www.w3.org/TR/CSS21/visudet.html#containing-block-details
-     */
+    
     protected function determine_absolute_containing_block(): void
     {
         $frame = $this->_frame;
@@ -93,10 +61,10 @@ abstract class AbstractFrameReflower
                 if ($parent !== $frame->get_root()) {
                     $parent_style = $parent->get_style();
                     $parent_padding_box = $parent->get_padding_box();
-                    //FIXME: an accurate measure of the positioned parent height
-                    //       is not possible until reflow has completed;
-                    //       we'll fall back to the parent's containing block,
-                    //       which is wrong for auto-height parents
+                    
+                    
+                    
+                    
                     if ($parent_style->height === "auto") {
                         $parent_containing_block = $parent->get_containing_block();
                         $containing_block_height = $parent_containing_block["h"] -
@@ -126,20 +94,17 @@ abstract class AbstractFrameReflower
                 $frame->set_containing_block($initial_cb["x"], $initial_cb["y"], $initial_cb["w"], $initial_cb["h"]);
                 break;
             default:
-                // Nothing to do, containing block already set via parent
+                
                 break;
         }
     }
 
-    /**
-     * Collapse frames margins
-     * http://www.w3.org/TR/CSS21/box.html#collapsing-margins
-     */
+    
     protected function _collapse_margins(): void
     {
         $frame = $this->_frame;
 
-        // Margins of float/absolutely positioned/inline-level elements do not collapse
+        
         if (!$frame->is_in_flow() || $frame->is_inline_level()
             || $frame->get_root() === $frame || $frame->get_parent() === $frame->get_root()
         ) {
@@ -152,7 +117,7 @@ abstract class AbstractFrameReflower
         $t = $style->length_in_pt($style->margin_top, $cb["w"]);
         $b = $style->length_in_pt($style->margin_bottom, $cb["w"]);
 
-        // Handle 'auto' values
+        
         if ($t === "auto") {
             $style->set_used("margin_top", 0.0);
             $t = 0.0;
@@ -163,7 +128,7 @@ abstract class AbstractFrameReflower
             $b = 0.0;
         }
 
-        // Collapse vertical margins:
+        
         $n = $frame->get_next_sibling();
         if ( $n && !($n->is_block_level() && $n->is_in_flow()) ) {
             while ($n = $n->get_next_sibling()) {
@@ -187,7 +152,7 @@ abstract class AbstractFrameReflower
             $n_style->set_used("margin_top", 0.0);
         }
 
-        // Collapse our first child's margin, if there is no border or padding
+        
         if ($style->border_top_width == 0 && $style->length_in_pt($style->padding_top) == 0) {
             $f = $this->_frame->get_first_child();
             if ( $f && !($f->is_block_level() && $f->is_in_flow()) ) {
@@ -203,7 +168,7 @@ abstract class AbstractFrameReflower
                 }
             }
 
-            // Margins are collapsed only between block-level boxes
+            
             if ($f) {
                 $f_style = $f->get_style();
                 $f_t = (float)$f_style->length_in_pt($f_style->margin_top, $cb["w"]);
@@ -214,7 +179,7 @@ abstract class AbstractFrameReflower
             }
         }
 
-        // Collapse our last child's margin, if there is no border or padding
+        
         if ($style->border_bottom_width == 0 && $style->length_in_pt($style->padding_bottom) == 0) {
             $l = $this->_frame->get_last_child();
             if ( $l && !($l->is_block_level() && $l->is_in_flow()) ) {
@@ -230,7 +195,7 @@ abstract class AbstractFrameReflower
                 }
             }
 
-            // Margins are collapsed only between block-level boxes
+            
             if ($l) {
                 $l_style = $l->get_style();
                 $l_b = (float)$l_style->length_in_pt($l_style->margin_bottom, $cb["w"]);
@@ -242,35 +207,21 @@ abstract class AbstractFrameReflower
         }
     }
 
-    /**
-     * Get the combined (collapsed) length of two adjoining margins.
-     *
-     * See http://www.w3.org/TR/CSS21/box.html#collapsing-margins.
-     *
-     * @param float $l1
-     * @param float $l2
-     *
-     * @return float
-     */
+    
     private function get_collapsed_margin_length(float $l1, float $l2): float
     {
         if ($l1 < 0 && $l2 < 0) {
-            return min($l1, $l2); // min(x, y) = - max(abs(x), abs(y)), if x < 0 && y < 0
+            return min($l1, $l2); 
         }
         
         if ($l1 < 0 || $l2 < 0) {
-            return $l1 + $l2; // x + y = x - abs(y), if y < 0
+            return $l1 + $l2; 
         }
         
         return max($l1, $l2);
     }
 
-    /**
-     * Handle relative positioning according to
-     * https://www.w3.org/TR/CSS21/visuren.html#relative-positioning.
-     *
-     * @param AbstractFrameDecorator $frame The frame to handle.
-     */
+    
     protected function position_relative(AbstractFrameDecorator $frame): void
     {
         $style = $frame->get_style();
@@ -282,8 +233,8 @@ abstract class AbstractFrameReflower
             $bottom = $style->length_in_pt($style->bottom, $cb["h"]);
             $left = $style->length_in_pt($style->left, $cb["w"]);
 
-            // FIXME RTL case:
-            // if ($left !== "auto" && $right !== "auto") $left = -$right;
+            
+            
             if ($left === "auto" && $right === "auto") {
                 $left = 0;
             } elseif ($left === "auto") {
@@ -300,21 +251,10 @@ abstract class AbstractFrameReflower
         }
     }
 
-    /**
-     * @param Block|null $block
-     */
+    
     abstract function reflow(?Block $block = null);
 
-    /**
-     * Resolve the `min-width` property.
-     *
-     * Resolves to 0 if not set or if a percentage and the containing-block
-     * width is not defined.
-     *
-     * @param float|null $cbw Width of the containing block.
-     *
-     * @return float
-     */
+    
     protected function resolve_min_width(?float $cbw): float
     {
         $style = $this->_frame->get_style();
@@ -325,16 +265,7 @@ abstract class AbstractFrameReflower
             : 0.0;
     }
 
-    /**
-     * Resolve the `max-width` property.
-     *
-     * Resolves to `INF` if not set or if a percentage and the containing-block
-     * width is not defined.
-     *
-     * @param float|null $cbw Width of the containing block.
-     *
-     * @return float
-     */
+    
     protected function resolve_max_width(?float $cbw): float
     {
         $style = $this->_frame->get_style();
@@ -345,16 +276,7 @@ abstract class AbstractFrameReflower
             : INF;
     }
 
-    /**
-     * Resolve the `min-height` property.
-     *
-     * Resolves to 0 if not set or if a percentage and the containing-block
-     * height is not defined.
-     *
-     * @param float|null $cbh Height of the containing block.
-     *
-     * @return float
-     */
+    
     protected function resolve_min_height(?float $cbh): float
     {
         $style = $this->_frame->get_style();
@@ -365,16 +287,7 @@ abstract class AbstractFrameReflower
             : 0.0;
     }
 
-    /**
-     * Resolve the `max-height` property.
-     *
-     * Resolves to `INF` if not set or if a percentage and the containing-block
-     * height is not defined.
-     *
-     * @param float|null $cbh Height of the containing block.
-     *
-     * @return float
-     */
+    
     protected function resolve_max_height(?float $cbh): float
     {
         $style = $this->_frame->get_style();
@@ -385,12 +298,7 @@ abstract class AbstractFrameReflower
             : INF;
     }
 
-    /**
-     * Get the minimum and maximum preferred width of the contents of the frame,
-     * as requested by its children.
-     *
-     * @return array A two-element array of min and max width.
-     */
+    
     public function get_min_max_child_width(): array
     {
         if (!is_null($this->_min_max_child_cache)) {
@@ -404,9 +312,9 @@ abstract class AbstractFrameReflower
             $inline_min = 0;
             $inline_max = 0;
 
-            // Add all adjacent inline widths together to calculate max width
+            
             while ($iter->valid() && ($iter->current()->is_inline_level() || $iter->current()->get_style()->display === "-dompdf-image")) {
-                /** @var AbstractFrameDecorator */
+                
                 $child = $iter->current();
                 $child->get_reflower()->_set_content();
                 $minmax = $child->get_min_max_width();
@@ -428,9 +336,9 @@ abstract class AbstractFrameReflower
                 $high[] = $inline_max;
             }
 
-            // Skip children with absolute position
+            
             if ($iter->valid() && !$iter->current()->is_absolute()) {
-                /** @var AbstractFrameDecorator */
+                
                 $child = $iter->current();
                 $child->get_reflower()->_set_content();
                 list($low[], $high[]) = $child->get_min_max_width();
@@ -443,27 +351,13 @@ abstract class AbstractFrameReflower
         return $this->_min_max_child_cache = [$min, $max];
     }
 
-    /**
-     * Get the minimum and maximum preferred content-box width of the frame.
-     *
-     * @return array A two-element array of min and max width.
-     */
+    
     public function get_min_max_content_width(): array
     {
         return $this->get_min_max_child_width();
     }
 
-    /**
-     * Get the minimum and maximum preferred border-box width of the frame.
-     *
-     * Required for shrink-to-fit width calculation, as used in automatic table
-     * layout, absolute positioning, float and inline-block. This provides a
-     * basic implementation. Child classes should override this or
-     * `get_min_max_content_width` as necessary.
-     *
-     * @return array An array `[0 => min, 1 => max, "min" => min, "max" => max]`
-     *         of min and max width.
-     */
+    
     public function get_min_max_width(): array
     {
         if (!is_null($this->_min_max_cache)) {
@@ -473,7 +367,7 @@ abstract class AbstractFrameReflower
         $style = $this->_frame->get_style();
         [$min, $max] = $this->get_min_max_content_width();
 
-        // Account for margins, borders, and padding
+        
         $dims = [
             $style->padding_left,
             $style->padding_right,
@@ -483,7 +377,7 @@ abstract class AbstractFrameReflower
             $style->margin_right
         ];
 
-        // The containing block is not defined yet, treat percentages as 0
+        
         $delta = (float) $style->length_in_pt($dims, 0);
         $min += $delta;
         $max += $delta;
@@ -491,13 +385,7 @@ abstract class AbstractFrameReflower
         return $this->_min_max_cache = [$min, $max, "min" => $min, "max" => $max];
     }
 
-    /**
-     * Resolves the `content` property to string.
-     *
-     * https://www.w3.org/TR/CSS21/generate.html#content
-     *
-     * @return string The resulting string
-     */
+    
     protected function resolve_content(): ?string
     {
         $frame = $this->_frame;
@@ -517,25 +405,25 @@ abstract class AbstractFrameReflower
             }
 
             elseif ($val instanceof OpenQuote) {
-                // FIXME: Take quotation depth into account
+                
                 if ($quotes !== "none" && isset($quotes[0][0])) {
                     $text .= $quotes[0][0];
                 }
             }
 
             elseif ($val instanceof CloseQuote) {
-                // FIXME: Take quotation depth into account
+                
                 if ($quotes !== "none" && isset($quotes[0][1])) {
                     $text .= $quotes[0][1];
                 }
             }
             
             elseif ($val instanceof NoOpenQuote) {
-                // FIXME: Increment quotation depth
+                
             }
 
             elseif ($val instanceof NoCloseQuote) {
-                // FIXME: Decrement quotation depth
+                
             }
 
             elseif ($val instanceof Attr) {
@@ -561,10 +449,7 @@ abstract class AbstractFrameReflower
         return $text;
     }
 
-    /**
-     * Handle counters and set generated content if the frame is a
-     * generated-content frame.
-     */
+    
     protected function _set_content(): void
     {
         $frame = $this->_frame;

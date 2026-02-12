@@ -7,23 +7,23 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'cajero') {
     exit;
 }
 
-// Marcar pedido como entregado
+
 if (isset($_GET['entregar'])) {
     $id_pedido = intval($_GET['entregar']);
-    $cajero_id = $_SESSION['usuario']['id']; // Obtenemos el ID del cajero logueado
+    $cajero_id = $_SESSION['usuario']['id']; 
 
-    // Modificamos la consulta para actualizar también la columna entregado_por_cajero_id
+    
     $stmt = $conexion->prepare("UPDATE pedidos SET estado = 'entregado', entregado_por_cajero_id = ? WHERE id = ?");
-    // Añadimos el nuevo parámetro (el ID del cajero) a bind_param
+    
     $stmt->bind_param("ii", $cajero_id, $id_pedido);
     $stmt->execute();
 
-    // Opcional: Redirigir de vuelta al dashboard para reflejar el cambio
+    
     header("Location: dashboard.php");
     exit;
 }
 
-// Obtener todos los pedidos pendientes
+
 $stmt = $conexion->prepare("
     SELECT p.id, u.nombre AS nombre_usuario, p.total, p.metodo_pago, p.creado_en
     FROM pedidos p
@@ -64,7 +64,7 @@ if ($stmt) {
     <?php else: ?>
         <?php while ($pedido = $pedidos->fetch_assoc()): ?>
             <div style="border:1px solid #ccc; padding:15px; margin-bottom: 20px;">
-                <h3>Pedido #<?php echo $pedido['id']; ?> - Cliente: <?php echo htmlspecialchars($pedido['nombre_usuario']); ?></h3>
+                <h3>Pedido 
                 <p><strong>Fecha:</strong> <?php echo $pedido['creado_en']; ?></p>
                 <p><strong>Método de pago:</strong> <?php echo htmlspecialchars($pedido['metodo_pago']); ?></p>
                 <p><strong>Total:</strong> $<?php echo number_format($pedido['total'], 2); ?></p>
@@ -99,7 +99,7 @@ if ($stmt) {
 </html>
 
 <?php
-// Cerrar conexión (asegurarse de que se cierra después de todas las operaciones)
+
 if (isset($conexion)) {
     $conexion->close();
 }

@@ -1,29 +1,17 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace FontLib\Table;
 
 use FontLib\TrueType\File;
 use FontLib\Font;
 use FontLib\BinaryStream;
 
-/**
- * Generic Font table directory entry.
- *
- * @package php-font-lib
- */
+
 class DirectoryEntry extends BinaryStream {
-  /**
-   * @var File
-   */
+  
   protected $font;
 
-  /**
-   * @var Table
-   */
+  
   protected $font_table;
 
   public $entryLength = 4;
@@ -35,11 +23,7 @@ class DirectoryEntry extends BinaryStream {
 
   protected $origF;
 
-  /**
-   * @param string $data
-   *
-   * @return int
-   */
+  
   static function computeChecksum($data) {
     $len = mb_strlen($data, '8bit');
     $mod = $len % 4;
@@ -62,7 +46,7 @@ class DirectoryEntry extends BinaryStream {
   }
 
   function open($filename, $mode = self::modeRead) {
-    // void
+    
   }
 
   function setTable(Table $font_table) {
@@ -71,7 +55,7 @@ class DirectoryEntry extends BinaryStream {
 
   function encode($entry_offset) {
     Font::d("\n==== $this->tag ====");
-    //Font::d("Entry offset  = $entry_offset");
+    
 
     $data = $this->font_table;
     $font = $this->font;
@@ -103,9 +87,7 @@ class DirectoryEntry extends BinaryStream {
     $font->seek($table_offset + $table_length + $pad);
   }
 
-  /**
-   * @return File
-   */
+  
   function getFont() {
     return $this->font;
   }
@@ -115,7 +97,7 @@ class DirectoryEntry extends BinaryStream {
   }
 
   function endRead() {
-    //
+    
   }
 
   function startWrite() {
@@ -123,7 +105,7 @@ class DirectoryEntry extends BinaryStream {
   }
 
   function endWrite() {
-    //
+    
   }
 }
 

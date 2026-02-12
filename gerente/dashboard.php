@@ -28,7 +28,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'gerente') {
     <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></h2>
     <p>Aquí puedes agregar y administrar productos.</p>
     <button onclick="location.href='agregar_producto.php'">Agregar producto</button>
-    <!-- Aquí mostrarás lista de productos y opciones para editarlos -->
+    
 </section>
 <?php include 'includes/footer.php'; ?>
 </body>

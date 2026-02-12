@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $costo = floatval($_POST['costo']);
     $categoria = $_POST['categoria'];
 
-    // Procesar imagen si se subió
+    
     $imagen_url = null;
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
         $carpeta_subida = '../img/';
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (!$mensaje) {
-        // Insertar producto en la base de datos
+        
         $stmt = $conexion->prepare("INSERT INTO productos (nombre, descripcion, costo, categoria, imagen_url) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("ssdss", $nombre, $descripcion, $costo, $categoria, $imagen_url);
 

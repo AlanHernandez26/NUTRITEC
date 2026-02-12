@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib\TrueType;
 
@@ -12,17 +8,9 @@ use FontLib\BinaryStream;
 use Iterator;
 use OutOfBoundsException;
 
-/**
- * TrueType collection font file.
- *
- * @package php-font-lib
- */
+
 class Collection extends BinaryStream implements Iterator, Countable {
-  /**
-   * Current iterator position.
-   *
-   * @var integer
-   */
+  
   private $position = 0;
 
   protected $collectionOffsets = array();
@@ -35,7 +23,7 @@ class Collection extends BinaryStream implements Iterator, Countable {
       return;
     }
 
-    $this->read(4); // tag name
+    $this->read(4); 
 
     $this->version  = $this->readFixed();
     $this->numFonts = $this->readUInt32();
@@ -45,12 +33,7 @@ class Collection extends BinaryStream implements Iterator, Countable {
     }
   }
 
-  /**
-   * @param int $fontId
-   *
-   * @throws OutOfBoundsException
-   * @return File
-   */
+  
   function getFont($fontId) {
     $this->parse();
 

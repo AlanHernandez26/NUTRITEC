@@ -7,18 +7,10 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
-/**
- * A `Size` consists of a numeric `size` value and a unit.
- */
+
 class Size extends PrimitiveValue
 {
-    /**
-     * vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
-     *
-     * @var array<int, string>
-     *
-     * @internal
-     */
+    
     const ABSOLUTE_SIZE_UNITS = [
         'px',
         'pt',
@@ -37,46 +29,25 @@ class Size extends PrimitiveValue
         'rem',
     ];
 
-    /**
-     * @var array<int, string>
-     *
-     * @internal
-     */
+    
     const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
 
-    /**
-     * @var array<int, string>
-     *
-     * @internal
-     */
+    
     const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turn', 'Hz', 'kHz'];
 
-    /**
-     * @var array<int, array<string, string>>|null
-     */
+    
     private static $SIZE_UNITS = null;
 
-    /**
-     * @var float
-     */
+    
     private $fSize;
 
-    /**
-     * @var string|null
-     */
+    
     private $sUnit;
 
-    /**
-     * @var bool
-     */
+    
     private $bIsColorComponent;
 
-    /**
-     * @param float|int|string $fSize
-     * @param string|null $sUnit
-     * @param bool $bIsColorComponent
-     * @param int $iLineNo
-     */
+    
     public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $iLineNo = 0)
     {
         parent::__construct($iLineNo);
@@ -85,16 +56,7 @@ class Size extends PrimitiveValue
         $this->bIsColorComponent = $bIsColorComponent;
     }
 
-    /**
-     * @param bool $bIsColorComponent
-     *
-     * @return Size
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     *
-     * @internal since V8.8.0
-     */
+    
     public static function parse(ParserState $oParserState, $bIsColorComponent = false)
     {
         $sSize = '';
@@ -109,7 +71,7 @@ class Size extends PrimitiveValue
                 if (is_numeric($sLookahead) || $sLookahead === '+' || $sLookahead === '-') {
                     $sSize .= $oParserState->consume(2);
                 } else {
-                    break; // Reached the unit part of the number like "em" or "ex"
+                    break; 
                 }
             } else {
                 $sSize .= $oParserState->consume(1);
@@ -130,9 +92,7 @@ class Size extends PrimitiveValue
         return new Size((float)$sSize, $sUnit, $bIsColorComponent, $oParserState->currentLine());
     }
 
-    /**
-     * @return array<int, array<string, string>>
-     */
+    
     private static function getSizeUnits()
     {
         if (!is_array(self::$SIZE_UNITS)) {
@@ -151,53 +111,37 @@ class Size extends PrimitiveValue
         return self::$SIZE_UNITS;
     }
 
-    /**
-     * @param string $sUnit
-     *
-     * @return void
-     */
+    
     public function setUnit($sUnit)
     {
         $this->sUnit = $sUnit;
     }
 
-    /**
-     * @return string|null
-     */
+    
     public function getUnit()
     {
         return $this->sUnit;
     }
 
-    /**
-     * @param float|int|string $fSize
-     */
+    
     public function setSize($fSize)
     {
         $this->fSize = (float)$fSize;
     }
 
-    /**
-     * @return float
-     */
+    
     public function getSize()
     {
         return $this->fSize;
     }
 
-    /**
-     * @return bool
-     */
+    
     public function isColorComponent()
     {
         return $this->bIsColorComponent;
     }
 
-    /**
-     * Returns whether the number stored in this Size really represents a size (as in a length of something on screen).
-     *
-     * @return false if the unit an angle, a duration, a frequency or the number is a component in a Color object.
-     */
+    
     public function isSize()
     {
         if (in_array($this->sUnit, self::NON_SIZE_UNITS, true)) {
@@ -206,9 +150,7 @@ class Size extends PrimitiveValue
         return !$this->isColorComponent();
     }
 
-    /**
-     * @return bool
-     */
+    
     public function isRelative()
     {
         if (in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
@@ -220,21 +162,13 @@ class Size extends PrimitiveValue
         return false;
     }
 
-    /**
-     * @return string
-     *
-     * @deprecated in V8.8.0, will be removed in V9.0.0. Use `render` instead.
-     */
+    
     public function __toString()
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @param OutputFormat|null $oOutputFormat
-     *
-     * @return string
-     */
+    
     public function render($oOutputFormat)
     {
         $l = localeconv();

@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\Css;
 
 use Dompdf\Helpers;
@@ -161,10 +157,7 @@ class Color
         "yellowgreen" => "9ACD32",
     ];
 
-    /**
-     * @param array|string|null $color
-     * @return array|string|null
-     */
+    
     static function parse($color)
     {
         if ($color === null) {
@@ -172,8 +165,8 @@ class Color
         }
 
         if (is_array($color)) {
-            // Assume the array has the right format...
-            // FIXME: should/could verify this.
+            
+            
             return $color;
         }
 
@@ -193,17 +186,17 @@ class Color
             return $cache[$color] = self::getArray(self::$cssColorNames[$color]);
         }
 
-        // https://www.w3.org/TR/css-color-4/#hex-notation
+        
         if (mb_substr($color, 0, 1) === "#") {
             $length = mb_strlen($color);
             $alpha = 1.0;
 
-            // #rgb format
+            
             if ($length === 4) {
                 return $cache[$color] = self::getArray($color[1] . $color[1] . $color[2] . $color[2] . $color[3] . $color[3]);
             }
 
-            // #rgba format
+            
             if ($length === 5) {
                 if (ctype_xdigit($color[4])) {
                     $alpha = round(hexdec($color[4] . $color[4])/255, 2);
@@ -211,12 +204,12 @@ class Color
                 return $cache[$color] = self::getArray($color[1] . $color[1] . $color[2] . $color[2] . $color[3] . $color[3], $alpha);
             }
 
-            // #rrggbb format
+            
             if ($length === 7) {
                 return $cache[$color] = self::getArray(mb_substr($color, 1, 6));
             }
             
-            // #rrggbbaa format
+            
             if ($length === 9) {
                 if (ctype_xdigit(mb_substr($color, 7, 2))) {
                     $alpha = round(hexdec(mb_substr($color, 7, 2))/255, 2);
@@ -227,13 +220,13 @@ class Color
             return null;
         }
 
-        // rgb( r g b [/α] ) / rgb( r,g,b[,α] ) format and alias rgba()
-        // https://www.w3.org/TR/css-color-4/#rgb-functions
+        
+        
         if (mb_substr($color, 0, 4) === "rgb(" || mb_substr($color, 0, 5) === "rgba(") {
             $i = mb_strpos($color, "(");
             $j = mb_strpos($color, ")");
 
-            // Bad color value
+            
             if ($i === false || $j === false) {
                 return null;
             }
@@ -241,12 +234,12 @@ class Color
             $value_decl = trim(mb_substr($color, $i + 1, $j - $i - 1));
 
             if (mb_strpos($value_decl, ",") === false) {
-                // Space-separated values syntax `r g b` or `r g b / α`
+                
                 $parts = preg_split("/\s*\/\s*/", $value_decl);
                 $triplet = preg_split("/\s+/", $parts[0]);
                 $alpha = $parts[1] ?? 1.0;
             } else {
-                // Comma-separated values syntax `r, g, b` or `r, g, b, α`
+                
                 $parts = preg_split("/\s*,\s*/", $value_decl);
                 $triplet = array_slice($parts, 0, 3);
                 $alpha = $parts[3] ?? 1.0;
@@ -256,7 +249,7 @@ class Color
                 return null;
             }
 
-            // Parse alpha value
+            
             if (Helpers::is_percent($alpha)) {
                 $alpha = (float) $alpha / 100;
             } else {
@@ -274,13 +267,13 @@ class Color
             return $cache[$color] = self::getArray(vsprintf("%02X%02X%02X", $triplet), $alpha);
         }
 
-        // cmyk( c,m,y,k ) format
-        // http://www.w3.org/TR/css3-gcpm/#cmyk-colors
+        
+        
         if (mb_substr($color, 0, 5) === "cmyk(") {
             $i = mb_strpos($color, "(");
             $j = mb_strpos($color, ")");
 
-            // Bad color value
+            
             if ($i === false || $j === false) {
                 return null;
             }
@@ -298,15 +291,11 @@ class Color
             return $cache[$color] = self::getArray($values);
         }
 
-        // Invalid or unsupported color format
+        
         return null;
     }
 
-    /**
-     * @param array|string $color
-     * @param float $alpha
-     * @return array
-     */
+    
     static function getArray($color, $alpha = 1.0)
     {
         $c = [null, null, null, null, "alpha" => $alpha, "hex" => null];
@@ -321,7 +310,7 @@ class Color
             $c["hex"] = "cmyk($c[0],$c[1],$c[2],$c[3])";
         } else {
             if (ctype_xdigit($color) === false || mb_strlen($color) !== 6) {
-                // invalid color value ... expected 6-character hex
+                
                 return $c;
             }
             $c[0] = hexdec(mb_substr($color, 0, 2)) / 0xff;

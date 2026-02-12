@@ -2,34 +2,19 @@
 
 namespace Sabberworm\CSS\Parsing;
 
-/**
- * Thrown if the CSS parser encounters a token it did not expect.
- */
+
 class UnexpectedTokenException extends SourceException
 {
-    /**
-     * @var string
-     */
+    
     private $sExpected;
 
-    /**
-     * @var string
-     */
+    
     private $sFound;
 
-    /**
-     * Possible values: literal, identifier, count, expression, search
-     *
-     * @var string
-     */
+    
     private $sMatchType;
 
-    /**
-     * @param string $sExpected
-     * @param string $sFound
-     * @param string $sMatchType
-     * @param int $iLineNo
-     */
+    
     public function __construct($sExpected, $sFound, $sMatchType = 'literal', $iLineNo = 0)
     {
         $this->sExpected = $sExpected;

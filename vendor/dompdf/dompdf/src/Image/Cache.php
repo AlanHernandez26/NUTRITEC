@@ -1,65 +1,29 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\Image;
 
 use Dompdf\Options;
 use Dompdf\Helpers;
 use Dompdf\Exception\ImageException;
 
-/**
- * Static class that resolves image urls and downloads and caches
- * remote images if required.
- *
- * @package dompdf
- */
+
 class Cache
 {
-    /**
-     * Array of downloaded images.  Cached so that identical images are
-     * not needlessly downloaded.
-     *
-     * @var array
-     */
+    
     protected static $_cache = [];
 
-    /**
-     * @var array
-     */
+    
     protected static $tempImages = [];
 
-    /**
-     * Array of image references from an SVG document.
-     * Used to detect circular references across SVG documents.
-     *
-     * @var array
-     */
+    
     protected static $svgRefs = [];
 
-    /**
-     * The url to the "broken image" used when images can't be loaded
-     *
-     * @var string
-     */
+    
     public static $broken_image = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0'?%3E%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect stroke='%23666666' id='svg_1' height='60.499994' width='60.166667' y='1.666669' x='1.999998' stroke-width='1.5' fill='none'/%3E%3Cline stroke-linecap='null' stroke-linejoin='null' id='svg_3' y2='59.333253' x2='59.749916' y1='4.333415' x1='4.250079' stroke-width='1.5' stroke='%23999999' fill='none'/%3E%3Cline stroke-linecap='null' stroke-linejoin='null' id='svg_4' y2='59.999665' x2='4.062838' y1='3.750342' x1='60.062164' stroke-width='1.5' stroke='%23999999' fill='none'/%3E%3C/g%3E%3C/svg%3E";
 
     public static $error_message = "Image not found or type unknown";
     
-    /**
-     * Resolve and fetch an image for use.
-     *
-     * @param string $url       The url of the image
-     * @param string $protocol  Default protocol if none specified in $url
-     * @param string $host      Default host if none specified in $url
-     * @param string $base_path Default path if none specified in $url
-     * @param Options $options  An instance of Dompdf\Options
-     *
-     * @return array            An array with three elements: The local path to the image, the image
-     *                          extension, and an error message if the image could not be cached
-     */
+    
     static function resolve_url($url, $protocol, $host, $base_path, Options $options)
     {
         $tempfile = null;
@@ -109,7 +73,7 @@ class Cache
                     list($image, $http_response_header) = Helpers::getFileContent($full_url, $options->getHttpContext());
                 }
 
-                // Image not found or invalid
+                
                 if ($image === null) {
                     $msg = ($is_data_uri ? "Data-URI could not be parsed" : "Image not found");
                     throw new ImageException($msg, E_WARNING);
@@ -122,7 +86,7 @@ class Cache
                 self::$_cache[$full_url] = $resolved_url;
             }
 
-            // Check if the local file is readable
+            
             if (!is_readable($resolved_url) || !filesize($resolved_url)) {
                 throw new ImageException("Image not readable or empty", E_WARNING);
             }
@@ -205,13 +169,7 @@ class Cache
         }
     }
 
-    /**
-     * Register a temp file for the given original image file.
-     *
-     * @param string $filePath The path of the original image.
-     * @param string $tempPath The path of the temp file to register.
-     * @param string $key      An optional key to register the temp file at.
-     */
+    
     static function addTempImage(string $filePath, string $tempPath, string $key = "default"): void
     {
         if (!isset(self::$tempImages[$filePath])) {
@@ -221,21 +179,13 @@ class Cache
         self::$tempImages[$filePath][$key] = $tempPath;
     }
 
-    /**
-     * Get the path of a temp file registered for the given original image file.
-     *
-     * @param string $filePath The path of the original image.
-     * @param string $key      The key the temp file is registered at.
-     */
+    
     static function getTempImage(string $filePath, string $key = "default"): ?string
     {
         return self::$tempImages[$filePath][$key] ?? null;
     }
 
-    /**
-     * Unlink all cached images (i.e. temporary images either downloaded
-     * or converted) except for the bundled "broken image"
-     */
+    
     static function clear(bool $debugPng = false)
     {
         foreach (self::$_cache as $file) {

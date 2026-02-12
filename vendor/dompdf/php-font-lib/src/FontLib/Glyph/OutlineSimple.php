@@ -1,18 +1,9 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: Font_Table_glyf.php 46 2012-04-02 20:22:38Z fabien.menager $
- */
+
 
 namespace FontLib\Glyph;
 
-/**
- * `glyf` font table.
- *
- * @package php-font-lib
- */
+
 class OutlineSimple extends Outline {
   const ON_CURVE       = 0x01;
   const X_SHORT_VECTOR = 0x02;
@@ -46,7 +37,7 @@ class OutlineSimple extends Outline {
 
     $count = $endPtsOfContours[$noc - 1] + 1;
 
-    // Flags
+    
     $flags = array();
     for ($index = 0; $index < $count; $index++) {
       $flags[$index] = $font->readUInt8();
@@ -68,7 +59,7 @@ class OutlineSimple extends Outline {
       $points[$i]["endOfContour"] = in_array($i, $endPtsOfContours);
     }
 
-    // X Coords
+    
     $x = 0;
     for ($i = 0; $i < $count; $i++) {
       $flag = $flags[$i];
@@ -90,7 +81,7 @@ class OutlineSimple extends Outline {
       $points[$i]["x"] = $x;
     }
 
-    // Y Coords
+    
     $y = 0;
     for ($i = 0; $i < $count; $i++) {
       $flag = $flags[$i];
@@ -130,7 +121,7 @@ class OutlineSimple extends Outline {
 
     while ($i < $l) {
       switch ($path[$i]) {
-        // moveTo
+        
         case "M":
           $points[] = array(
             "onCurve"      => true,
@@ -140,7 +131,7 @@ class OutlineSimple extends Outline {
           );
           break;
 
-        // lineTo
+        
         case "L":
           $points[] = array(
             "onCurve"      => true,
@@ -150,7 +141,7 @@ class OutlineSimple extends Outline {
           );
           break;
 
-        // quadraticCurveTo
+        
         case "Q":
           $points[] = array(
             "onCurve"      => false,
@@ -166,8 +157,8 @@ class OutlineSimple extends Outline {
           );
           break;
 
-        // closePath
-        /** @noinspection PhpMissingBreakStatementInspection */
+        
+        
         case "z":
           $points[count($points) - 1]["endOfContour"] = true;
 
@@ -208,7 +199,7 @@ class OutlineSimple extends Outline {
         $endPtsOfContours[] = $i;
       }
 
-      // Simplified, we could do some optimizations
+      
       if ($point["x"] == $last_x) {
         $flag |= self::THIS_X_IS_SAME;
       }
@@ -216,10 +207,10 @@ class OutlineSimple extends Outline {
         $x          = intval($point["x"]);
         $xMin       = min($x, $xMin);
         $xMax       = max($x, $xMax);
-        $coords_x[] = $x - $last_x; // int16
+        $coords_x[] = $x - $last_x; 
       }
 
-      // Simplified, we could do some optimizations
+      
       if ($point["y"] == $last_y) {
         $flag |= self::THIS_Y_IS_SAME;
       }
@@ -227,7 +218,7 @@ class OutlineSimple extends Outline {
         $y          = intval($point["y"]);
         $yMin       = min($y, $yMin);
         $yMax       = max($y, $yMax);
-        $coords_y[] = $y - $last_y; // int16
+        $coords_y[] = $y - $last_y; 
       }
 
       $flags[] = $flag;
@@ -238,18 +229,18 @@ class OutlineSimple extends Outline {
     $font = $this->getFont();
 
     $l = 0;
-    $l += $font->writeInt16(count($endPtsOfContours)); // endPtsOfContours
-    $l += $font->writeFWord(isset($this->xMin) ? $this->xMin : $xMin); // xMin
-    $l += $font->writeFWord(isset($this->yMin) ? $this->yMin : $yMin); // yMin
-    $l += $font->writeFWord(isset($this->xMax) ? $this->xMax : $xMax); // xMax
-    $l += $font->writeFWord(isset($this->yMax) ? $this->yMax : $yMax); // yMax
+    $l += $font->writeInt16(count($endPtsOfContours)); 
+    $l += $font->writeFWord(isset($this->xMin) ? $this->xMin : $xMin); 
+    $l += $font->writeFWord(isset($this->yMin) ? $this->yMin : $yMin); 
+    $l += $font->writeFWord(isset($this->xMax) ? $this->xMax : $xMax); 
+    $l += $font->writeFWord(isset($this->yMax) ? $this->yMax : $yMax); 
 
-    // Simple glyf
-    $l += $font->w(array(self::uint16, count($endPtsOfContours)), $endPtsOfContours); // endPtsOfContours
-    $l += $font->writeUInt16(0); // instructionLength
-    $l += $font->w(array(self::uint8, count($flags)), $flags); // flags
-    $l += $font->w(array(self::int16, count($coords_x)), $coords_x); // xCoordinates
-    $l += $font->w(array(self::int16, count($coords_y)), $coords_y); // yCoordinates
+    
+    $l += $font->w(array(self::uint16, count($endPtsOfContours)), $endPtsOfContours); 
+    $l += $font->writeUInt16(0); 
+    $l += $font->w(array(self::uint8, count($flags)), $flags); 
+    $l += $font->w(array(self::int16, count($coords_x)), $coords_x); 
+    $l += $font->w(array(self::int16, count($coords_y)), $coords_y); 
     return $l;
   }
 

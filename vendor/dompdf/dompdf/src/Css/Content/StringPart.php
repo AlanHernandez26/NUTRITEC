@@ -3,9 +3,7 @@ namespace Dompdf\Css\Content;
 
 final class StringPart extends ContentPart
 {
-    /**
-     * @var string
-     */
+    
     public $string;
 
     public function __construct(string $string)

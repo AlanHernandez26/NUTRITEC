@@ -1,31 +1,23 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\Positioner;
 
 use Dompdf\FrameDecorator\AbstractFrameDecorator;
 use Dompdf\FrameReflower\Block;
 
-/**
- * Positions fixely positioned frames
- */
+
 class Fixed extends Absolute
 {
 
-    /**
-     * @param AbstractFrameDecorator $frame
-     */
+    
     function position(AbstractFrameDecorator $frame): void
     {
         if ($frame->get_reflower() instanceof Block) {
             parent::position($frame);
         } else {
-            // Legacy positioning logic for image and table frames
-            // TODO: Resolve dimensions, margins, and offsets similar to the
-            // block case in the reflowers and use the simplified logic above
+            
+            
+            
             $style = $frame->get_style();
             $root = $frame->get_root();
             $initialcb = $root->get_containing_block();
@@ -35,13 +27,13 @@ class Fixed extends Absolute
             if ($p) {
                 $p->add_line();
             }
-            // Compute the margins of the @page style
+            
             $margin_top = (float)$initialcb_style->length_in_pt($initialcb_style->margin_top, $initialcb["h"]);
             $margin_right = (float)$initialcb_style->length_in_pt($initialcb_style->margin_right, $initialcb["w"]);
             $margin_bottom = (float)$initialcb_style->length_in_pt($initialcb_style->margin_bottom, $initialcb["h"]);
             $margin_left = (float)$initialcb_style->length_in_pt($initialcb_style->margin_left, $initialcb["w"]);
 
-            // The needed computed style of the element
+            
             $height = (float)$style->length_in_pt($style->get_specified("height"), $initialcb["h"]);
             $width = (float)$style->length_in_pt($style->get_specified("width"), $initialcb["w"]);
 

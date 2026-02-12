@@ -1,4 +1,4 @@
-/* Reset general */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,10 +6,10 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Cuerpo */
+
 body {
-    background-color: #F1F8F6;
-    color: #1E3932;
+    background-color: 
+    color: 
     line-height: 1.6;
 }
 
@@ -19,10 +19,10 @@ html, body {
   height: 100%;
 }
 
-/* Encabezado */
+
 header {
-    background: linear-gradient(to right, #00704A, #1E3932);
-    color: #ffffff;
+    background: linear-gradient(to right, 
+    color: 
     padding: 1.5rem;
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -41,12 +41,12 @@ main {
 }
 
 footer {
-  background-color: #eaf8f5;
+  background-color: 
   text-align: center;
   padding: 20px 10px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 14px;
-  color: #444;
+  color: 
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
 }
 
@@ -60,7 +60,7 @@ nav {
 }
 
 nav a {
-    color: #ffffff;
+    color: 
     text-decoration: none;
     margin: 0 1rem;
     font-weight: bold;
@@ -68,10 +68,10 @@ nav a {
 }
 
 nav a:hover {
-    color: #A7D8C7;
+    color: 
 }
 
-/* Contenedor de productos */
+
 .contenedor-productos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -81,8 +81,8 @@ nav a:hover {
 }
 
 .producto {
-    background-color: #ffffff;
-    border: 1px solid #C8E6DA;
+    background-color: 
+    border: 1px solid 
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     padding: 1rem;
@@ -102,7 +102,7 @@ nav a:hover {
 .producto h3 {
     font-size: 1.2rem;
     margin: 0.8rem 0 0.4rem;
-    color: #00704A;
+    color: 
 }
 
 .producto p {
@@ -110,9 +110,9 @@ nav a:hover {
     margin-bottom: 0.5rem;
 }
 
-/* Botón de producto */
+
 .producto button {
-    background-color: #00704A;
+    background-color: 
     border: none;
     color: white;
     padding: 0.5rem 1rem;
@@ -123,10 +123,10 @@ nav a:hover {
 }
 
 .producto button:hover {
-    background-color: #005738;
+    background-color: 
 }
 
-/* Formularios */
+
 form {
     display: flex;
     flex-direction: column;
@@ -140,7 +140,7 @@ input[type="number"],
 select,
 textarea {
     padding: 0.6rem;
-    border: 1px solid #A7D8C7;
+    border: 1px solid 
     border-radius: 8px;
     transition: border-color 0.3s ease;
 }
@@ -148,15 +148,15 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: #00704A;
+    border-color: 
     outline: none;
 }
 
-/* Botones generales */
+
 button,
 input[type="submit"] {
-    background-color: #00704A;
-    color: #fff;
+    background-color: 
+    color: 
     border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
@@ -166,24 +166,24 @@ input[type="submit"] {
 
 button:hover,
 input[type="submit"]:hover {
-    background-color: #005738;
+    background-color: 
 }
 
-/* Footer */
+
 footer {
-    background-color: #E6F4EF;
+    background-color: 
     padding: 1rem;
     text-align: center;
     margin-top: 2rem;
     font-size: 0.9rem;
 }
 
-/* Tablas */
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 2rem 0;
-    background: #ffffff;
+    background: 
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -194,11 +194,11 @@ table th,
 table td {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid #F0F0F0;
+    border-bottom: 1px solid 
 }
 
 table th {
-    background-color: #1E3932;
+    background-color: 
     color: white;
 }
 
@@ -220,35 +220,35 @@ table td button {
 }
 
 .btn-editar {
-    background-color: #A7D8C7;
-    color: #1E3932;
-    border: 1px solid #1E3932;
+    background-color: 
+    color: 
+    border: 1px solid 
 }
 
 .btn-editar:hover {
-    background-color: #7bcbb0;
-    color: #ffffff;
-    border-color: #1E3932;
+    background-color: 
+    color: 
+    border-color: 
 }
 
 .btn-eliminar {
-    background-color: #F6CFCF;
-    color: #8B0000;
-    border: 1px solid #8B0000;
+    background-color: 
+    color: 
+    border: 1px solid 
 }
 
 .btn-eliminar:hover {
-    background-color: #dc5c5c;
+    background-color: 
     color: white;
-    border-color: #7a0000;
+    border-color: 
 }
 
-/* Estilos específicos para el formulario de login */
+
 .form-login {
     max-width: 400px;
     margin: 5rem auto;
     padding: 2rem;
-    background-color: #ffffff;
+    background-color: 
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.8s ease;
@@ -257,14 +257,14 @@ table td button {
 .form-login h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #1E3932;
+    color: 
 }
 
 .form-login input[type="email"],
 .form-login input[type="password"] {
-    background-color: #ffffff;
+    background-color: 
     font-weight: normal;
-    border: 1px solid #A7D8C7;
+    border: 1px solid 
 }
 
 .form-login input[type="submit"] {
@@ -273,7 +273,7 @@ table td button {
 }
 
 .form-login a {
-    color: #00704A;
+    color: 
     font-weight: 500;
     text-decoration: none;
 }
@@ -290,7 +290,7 @@ table td button {
 .seccion-usuarios h2 {
     font-size: 1.8rem;
     margin-bottom: 1.2rem;
-    color: #1E3932;
+    color: 
 }
 
 .acciones-usuarios {
@@ -304,7 +304,7 @@ table td button {
 }
 
 
-/* Animaciones */
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -317,4 +317,51 @@ table td button {
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+/* Responsive additions */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+header h1 {
+    font-size: 1.6rem;
+}
+
+/* Form and layout adjustments */
+.form-login, section, .seccion-usuarios {
+    padding: 1rem;
+    margin: 1rem;
+}
+
+/* Small devices */
+@media (max-width: 768px) {
+    .contenedor-productos { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); padding: 1rem; gap: 1rem; }
+    .form-login { margin: 2rem auto; }
+    nav a { margin: 0.4rem; font-size: 0.95rem; }
+    header h1 { font-size: 1.4rem; }
+}
+
+@media (max-width: 480px) {
+    header h1 { font-size: 1.2rem; }
+    .producto img { height: auto; }
+    .form-login { width: 95%; padding: 1rem; }
+    table, thead, tbody, th, td, tr { display: block; }
+    table th { display: none; }
+    table td { padding: 0.6rem; border: 0; }
 }

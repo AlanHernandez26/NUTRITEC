@@ -3,9 +3,7 @@ namespace Dompdf\Css\Content;
 
 final class Attr extends ContentPart
 {
-    /**
-     * @var string
-     */
+    
     public $attribute;
 
     public function __construct(string $attribute)

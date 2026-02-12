@@ -1,18 +1,9 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: Font_Table_glyf.php 46 2012-04-02 20:22:38Z fabien.menager $
- */
+
 
 namespace FontLib\Glyph;
 
-/**
- * Composite glyph outline
- *
- * @package php-font-lib
- */
+
 class OutlineComposite extends Outline {
   const ARG_1_AND_2_ARE_WORDS    = 0x0001;
   const ARGS_ARE_XY_VALUES       = 0x0002;
@@ -25,9 +16,7 @@ class OutlineComposite extends Outline {
   const USE_MY_METRICS           = 0x0200;
   const OVERLAP_COMPOUND         = 0x0400;
 
-  /**
-   * @var OutlineComponent[]
-   */
+  
   public $components = array();
 
   function getGlyphIDs() {
@@ -49,9 +38,7 @@ class OutlineComposite extends Outline {
     return $glyphIDs;
   }
 
-  /*function parse() {
-    //$this->parseData();
-  }*/
+  
 
   function parseData() {
     parent::parseData();
@@ -109,9 +96,9 @@ class OutlineComposite extends Outline {
         $d = $font->readInt16();
       }
 
-      //if ($flags & self::WE_HAVE_INSTRUCTIONS) {
-      //
-      //}
+      
+      
+      
 
       $component                  = new OutlineComponent();
       $component->flags           = $flags;
@@ -230,10 +217,10 @@ class OutlineComposite extends Outline {
   public function getSVGContours() {
     $contours = array();
 
-    /** @var \FontLib\Table\Type\glyf $glyph_data */
+    
     $glyph_data = $this->getFont()->getTableObject("glyf");
 
-    /** @var Outline[] $glyphs */
+    
     $glyphs = $glyph_data->data;
 
     foreach ($this->components as $component) {

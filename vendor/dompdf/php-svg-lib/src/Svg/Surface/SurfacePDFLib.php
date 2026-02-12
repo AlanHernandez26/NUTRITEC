@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg\Surface;
 
@@ -19,7 +15,7 @@ class SurfacePDFLib implements SurfaceInterface
     private $width;
     private $height;
 
-    /** @var Style */
+    
     private $style;
 
     public function __construct(Document $doc, $canvas = null)
@@ -33,11 +29,11 @@ class SurfacePDFLib implements SurfaceInterface
         if (!$canvas) {
             $canvas = new \PDFlib();
 
-            /* all strings are expected as utf8 */
+            
             $canvas->set_option("stringformat=utf8");
             $canvas->set_option("errorpolicy=return");
 
-            /*  open new PDF file; insert a file name to create the PDF on disk */
+            
             if ($canvas->begin_document("", "") == 0) {
                 die("Error: " . $canvas->get_errmsg());
             }
@@ -47,8 +43,8 @@ class SurfacePDFLib implements SurfaceInterface
             $canvas->begin_page_ext($w, $h, "");
         }
 
-        // Flip PDF coordinate system so that the origin is in
-        // the top left rather than the bottom left
+        
+        
         $canvas->setmatrix(
             1, 0,
             0, -1,
@@ -110,7 +106,7 @@ class SurfacePDFLib implements SurfaceInterface
     public function beginPath()
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
-        // TODO: Implement beginPath() method.
+        
     }
 
     public function closePath()
@@ -145,7 +141,7 @@ class SurfacePDFLib implements SurfaceInterface
     public function strokeText($text, $x, $y, $maxWidth = null)
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
-        // TODO: Implement drawImage() method.
+        
     }
 
     public function drawImage($image, $sx, $sy, $sw = null, $sh = null, $dx = null, $dy = null, $dw = null, $dh = null)
@@ -189,7 +185,7 @@ class SurfacePDFLib implements SurfaceInterface
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
 
-        // FIXME not accurate
+        
         $this->canvas->curveTo($cpx, $cpy, $cpx, $cpy, $x, $y);
     }
 
@@ -235,39 +231,37 @@ class SurfacePDFLib implements SurfaceInterface
 
         $canvas = $this->canvas;
 
-        if ($rx <= 0.000001/* && $ry <= 0.000001*/) {
+        if ($rx <= 0.000001) {
             $canvas->rect($x, $y, $w, $h);
 
             return;
         }
 
-        /* Define a path for a rectangle with corners rounded by a given radius.
-         * Start from the lower left corner and proceed counterclockwise.
-         */
+        
         $canvas->moveto($x + $rx, $y);
 
-        /* Start of the arc segment in the lower right corner */
+        
         $canvas->lineto($x + $w - $rx, $y);
 
-        /* Arc segment in the lower right corner */
+        
         $canvas->arc($x + $w - $rx, $y + $rx, $rx, 270, 360);
 
-        /* Start of the arc segment in the upper right corner */
+        
         $canvas->lineto($x + $w, $y + $h - $rx );
 
-        /* Arc segment in the upper right corner */
+        
         $canvas->arc($x + $w - $rx, $y + $h - $rx, $rx, 0, 90);
 
-        /* Start of the arc segment in the upper left corner */
+        
         $canvas->lineto($x + $rx, $y + $h);
 
-        /* Arc segment in the upper left corner */
+        
         $canvas->arc($x + $rx, $y + $h - $rx, $rx, 90, 180);
 
-        /* Start of the arc segment in the lower left corner */
+        
         $canvas->lineto($x , $y + $rx);
 
-        /* Arc segment in the lower left corner */
+        
         $canvas->arc($x + $rx, $y + $rx, $rx, 180, 270);
     }
 
@@ -424,6 +418,6 @@ class SurfacePDFLib implements SurfaceInterface
 
     public function setFont($family, $style, $weight)
     {
-        // TODO: Implement setFont() method.
+        
     }
 }

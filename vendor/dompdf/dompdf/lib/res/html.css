@@ -1,18 +1,4 @@
-/**
- * dompdf default stylesheet.
- *
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- *
- * Portions from Mozilla
- * @link https://dxr.mozilla.org/mozilla-central/source/layout/style/res/html.css
- * @license http://mozilla.org/MPL/2.0/ Mozilla Public License, v. 2.0
- *
- * Portions from W3C
- * @link https://www.w3.org/TR/css-ui-3/#default-style-sheet
- *
- */
+
 
 @page {
   margin: 1.2cm;
@@ -23,7 +9,7 @@ html {
   counter-reset: page;
 }
 
-/* blocks */
+
 
 article,
 aside,
@@ -132,7 +118,7 @@ plaintext, pre, xmp {
   margin: 1em 0;
 }
 
-/* tables */
+
 
 table {
   display: table;
@@ -141,7 +127,7 @@ table {
   margin-top: 0;
   margin-bottom: 0;
   text-indent: 0;
-  text-align: left; /* quirk */
+  text-align: left; 
 }
 
 table[border] {
@@ -158,12 +144,12 @@ table[border="0"] th {
   border-width: 0;
 }
 
-/* make sure backgrounds are inherited in tables  -- see bug 4510 */
+
 td, th, tr {
   background: inherit;
 }
 
-/* caption inherits from table not table-outer */
+
 caption {
   display: table-caption;
   text-align: center;
@@ -197,7 +183,7 @@ tfoot {
   vertical-align: middle;
 }
 
-/* To simulate tbody auto-insertion */
+
 table > tr {
   vertical-align: middle;
 }
@@ -217,7 +203,7 @@ th {
   padding: 1px;
 }
 
-/* inlines */
+
 
 q::before {
   content: open-quote;
@@ -228,7 +214,7 @@ q::after {
 }
 
 :link {
-  color: #00c;
+  color: 
   text-decoration: underline;
 }
 
@@ -281,13 +267,13 @@ mark {
   color: black;
 }
 
-/* titles */
+
 
 abbr[title], acronym[title] {
   text-decoration: dotted underline;
 }
 
-/* lists */
+
 
 ul, menu, dir {
   display: block;
@@ -307,13 +293,9 @@ li {
   display: list-item;
 }
 
-/*li::before {
-  display: -dompdf-list-bullet !important;
-  content: counter(-dompdf-default-counter) ". ";
-  padding-right: 0.5em;
-}*/
 
-/* nested lists have no top/bottom margins */
+
+
 :matches(ul, ol, dir, menu, dl) ul,
 :matches(ul, ol, dir, menu, dl) ol,
 :matches(ul, ol, dir, menu, dl) dir,
@@ -323,22 +305,22 @@ li {
   margin-bottom: 0;
 }
 
-/* 2 deep unordered lists use a circle */
+
 :matches(ul, ol, dir, menu) ul,
 :matches(ul, ol, dir, menu) menu,
 :matches(ul, ol, dir, menu) dir {
   list-style-type: circle;
 }
 
-/* 3 deep (or more) unordered lists use a square */
+
 :matches(ul, ol, dir, menu) :matches(ul, ol, dir, menu) ul,
 :matches(ul, ol, dir, menu) :matches(ul, ol, dir, menu) menu,
 :matches(ul, ol, dir, menu) :matches(ul, ol, dir, menu) dir {
   list-style-type: square;
 }
 
-/* forms */
-/* From https://www.w3.org/TR/css-ui-3/#default-style-sheet */
+
+
 form {
   display: block;
 }
@@ -349,8 +331,8 @@ input, button, select {
 }
 
 input, button, textarea, select {
-  background: #FFF;
-  border: 1px solid #999;
+  background: 
+  border: 1px solid 
   padding: 2px;
   margin: 2px;
 }
@@ -378,7 +360,7 @@ input[type=reset],
 input[type=file],
 button {
   width: auto;
-  background: #CCC;
+  background: 
   text-align: center;
 }
 
@@ -453,7 +435,7 @@ select::after {
   height: 5em;
   width: 1.4em;
   text-align: center;
-  background: #CCC;
+  background: 
   content: "\25BE";
 }
 
@@ -469,7 +451,7 @@ fieldset {
   display: block;
   margin: 0.6em 2px 2px;
   padding: 0.75em;
-  border: 1pt groove #666;
+  border: 1pt groove 
   position: relative;
 }
 
@@ -485,7 +467,7 @@ legend {
   display: inline-block;
 }
 
-/* leafs */
+
 
 hr {
   display: block;
@@ -518,7 +500,7 @@ dompdf_generated {
   display: inline;
 }
 
-/* hidden elements */
+
 area, base, basefont, head, meta, script, style, title,
 noembed, param {
   display: none;

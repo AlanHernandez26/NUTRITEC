@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg\Tag;
 
@@ -39,12 +35,12 @@ class Shape extends AbstractTag
                 if ($stroke) {
                     $surface->fillStroke(false);
                 } else {
-//                    if (is_string($style->fill)) {
-//                        /** @var LinearGradient|RadialGradient $gradient */
-//                        $gradient = $this->getDocument()->getDef($style->fill);
-//
-//                        var_dump($gradient->getStops());
-//                    }
+
+
+
+
+
+
 
                     $surface->fill();
                 }

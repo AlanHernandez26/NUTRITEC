@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg\Tag;
 
@@ -18,7 +14,7 @@ class Polyline extends Shape
         $count = count($points);
 
         if ($count < 4) {
-            // nothing to draw
+            
             return;
         }
 
@@ -28,7 +24,7 @@ class Polyline extends Shape
 
         for ($i = 2; $i < $count; $i += 2) {
             if ($i + 1 === $count) {
-                // invalid trailing point
+                
                 continue;
             }
             $x = $points[$i];

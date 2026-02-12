@@ -2,13 +2,13 @@
 session_start();
 require_once 'db/conexion.php';
 
-// Verificar si el usuario ha iniciado sesión
+
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit;
 }
 
-// Verificar si viene el ID del producto
+
 if (!isset($_POST['producto_id'])) {
     echo "Producto no especificado.";
     exit;
@@ -16,7 +16,7 @@ if (!isset($_POST['producto_id'])) {
 
 $producto_id = intval($_POST['producto_id']);
 
-// Consultar el producto
+
 $stmt = $conexion->prepare("SELECT * FROM productos WHERE id = ?");
 $stmt->bind_param("i", $producto_id);
 $stmt->execute();
@@ -38,6 +38,7 @@ $producto = $resultado->fetch_assoc();
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <header>
         <h1>Confirmar compra</h1>
         <nav>

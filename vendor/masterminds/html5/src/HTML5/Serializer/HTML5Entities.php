@@ -1,21 +1,9 @@
 <?php
-/**
- * @file
- * This contains HTML5 entities to use with serializing.
- *
- * The list here is mildly different from the list at Entities because
- * that list was generated from the w3c. It contains some entities that are
- * not entirely proper such as &am; which maps to &. This list is meant to be
- * a fallback for PHP versions prior to PHP 5.4 when dealing with encoding.
- */
+
 
 namespace Masterminds\HTML5\Serializer;
 
-/**
- * A mapping of entities to their html5 representation.
- * Used for older PHP
- * versions that don't have the mapping.
- */
+
 class HTML5Entities
 {
     public static $map = array(

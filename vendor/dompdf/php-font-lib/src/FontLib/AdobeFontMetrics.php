@@ -1,26 +1,16 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib;
 
 use FontLib\Table\Type\name;
 use FontLib\TrueType\File;
 
-/**
- * Adobe Font Metrics file creation utility class.
- *
- * @package php-font-lib
- */
+
 class AdobeFontMetrics {
   private $f;
 
-  /**
-   * @var File
-   */
+  
   private $font;
 
   function __construct(File $font) {
@@ -83,21 +73,21 @@ class AdobeFontMetrics {
     $glyphIndexArray = $font->getUnicodeCharMap();
     $hasGlyphs = $glyf instanceof glyf && is_array($glyphIndexArray);
 
-    // capHeight is based on capital H
+    
     if ($hasGlyphs && \array_key_exists(72, $glyphIndexArray)) {
       $upperH = $glyf[$glyphIndexArray[72]];
       $upperH->parseData();
       $this->addPair("CapHeight", $font->normalizeFUnit($upperH->yMax));
     }
 
-    // xHeight is based on lowercase x
+    
     if ($hasGlyphs && \array_key_exists(120, $glyphIndexArray)) {
       $lowerX = $glyf[$glyphIndexArray[120]];
       $lowerX->parseData();
       $this->addPair("XHeight", $font->normalizeFUnit($lowerX->yMax));
     }
 
-    // ascender is based on lowercase d
+    
     if ($hasGlyphs && \array_key_exists(100, $glyphIndexArray)) {
       $lowerD = $glyf[$glyphIndexArray[100]];
       $lowerD->parseData();
@@ -109,7 +99,7 @@ class AdobeFontMetrics {
       $this->addPair("Ascender", $font->normalizeFUnit($os2["typoAscender"]));
     }
 
-    // descender is based on lowercase p
+    
     if ($hasGlyphs && \array_key_exists(112, $glyphIndexArray)) {
       $lowerP = $glyf[$glyphIndexArray[112]];
       $lowerP->parseData();

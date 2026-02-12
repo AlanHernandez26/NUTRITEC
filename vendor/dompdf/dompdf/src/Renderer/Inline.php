@@ -1,30 +1,22 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\Renderer;
 
 use Dompdf\Frame;
 
-/**
- * Renders inline frames
- *
- * @package dompdf
- */
+
 class Inline extends AbstractRenderer
 {
     function render(Frame $frame)
     {
-        // Get the first in-flow child
+        
         $child = $frame->get_first_child();
         while ($child && !$child->is_in_flow()) {
             $child = $child->get_next_sibling();
         }
 
         if (!$child) {
-            return; // No children, no service
+            return; 
         }
 
         $style = $frame->get_style();
@@ -32,10 +24,10 @@ class Inline extends AbstractRenderer
 
         $this->_set_opacity($frame->get_opacity($style->opacity));
 
-        // Draw background & border behind each child. To do this, we need to
-        // to figure out just how much space each child takes. Retrieve the
-        // position of the first child again, to account for text and vertical
-        // alignment
+        
+        
+        
+        
         [$x, $y] = $child->get_position();
         [$w, $h] = $this->get_child_size($frame);
 
@@ -44,11 +36,11 @@ class Inline extends AbstractRenderer
         $pt = $style->length_in_pt($style->padding_top, $cbw);
         $pb = $style->length_in_pt($style->padding_bottom, $cbw);
 
-        // Make sure that border and background start inside the left margin
-        // Extend the drawn box by border and padding in vertical direction, as
-        // these do not affect layout
-        // FIXME: Using a small vertical offset of a fraction of the height here
-        // to work around the vertical position being slightly off in general
+        
+        
+        
+        
+        
         $x += $margin_left;
         $y -= $style->border_top_width + $pt - ($h * 0.1);
         $h += $style->border_top_width + $pt + $style->border_bottom_width + $pb;
@@ -88,7 +80,7 @@ class Inline extends AbstractRenderer
                 continue;
             }
 
-            // Exclude trailing white space
+            
             if ($child->get_node()->nodeValue === " "
                 && $child->get_prev_sibling() && !$child->get_next_sibling()
             ) {

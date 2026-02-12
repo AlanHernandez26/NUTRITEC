@@ -1,9 +1,5 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\FrameReflower;
 
 use Dompdf\Exception;
@@ -12,35 +8,26 @@ use Dompdf\FrameDecorator\Table as TableFrameDecorator;
 use Dompdf\FrameDecorator\TableCell as TableCellFrameDecorator;
 use Dompdf\Helpers;
 
-/**
- * Reflows table cells
- *
- * @package dompdf
- */
+
 class TableCell extends Block
 {
-    /**
-     * TableCell constructor.
-     * @param BlockFrameDecorator $frame
-     */
+    
     function __construct(BlockFrameDecorator $frame)
     {
         parent::__construct($frame);
     }
 
-    /**
-     * @param BlockFrameDecorator|null $block
-     */
+    
     function reflow(?BlockFrameDecorator $block = null)
     {
-        /** @var TableCellFrameDecorator */
+        
         $frame = $this->_frame;
         $table = TableFrameDecorator::find_parent_table($frame);
         if ($table === null) {
             throw new Exception("Parent table not found for table cell");
         }
 
-        // Counters and generated content
+        
         $this->_set_content();
 
         $style = $frame->get_style();
@@ -57,7 +44,7 @@ class TableCell extends Block
             $w += $col["used-width"];
         }
 
-        //FIXME?
+        
         $h = $frame->get_containing_block("h");
 
         $left_space = (float)$style->length_in_pt([$style->margin_left,
@@ -85,17 +72,17 @@ class TableCell extends Block
         $content_x = $x + $left_space;
         $content_y = $line_y = $y + $top_space;
 
-        // Adjust the first line based on the text-indent property
+        
         $indent = (float)$style->length_in_pt($style->text_indent, $w);
         $frame->increase_line_width($indent);
 
         $page = $frame->get_root();
 
-        // Set the y position of the first line in the cell
+        
         $line_box = $frame->get_current_line_box();
         $line_box->y = $line_y;
 
-        // Set the containing blocks and reflow each child
+        
         foreach ($frame->get_children() as $child) {
             $child->set_containing_block($content_x, $content_y, $cb_w, $h);
             $this->process_clear($child);
@@ -107,14 +94,14 @@ class TableCell extends Block
             }
         }
 
-        // Determine our height
+        
         $style_height = (float) $style->length_in_pt($style->height, $h);
         $content_height = $this->_calculate_content_height();
         $height = max($style_height, $content_height);
 
         $frame->set_content_height($content_height);
 
-        // Let the cellmap know our height
+        
         $cell_height = $height / count($cells["rows"]);
 
         if ($style_height <= $height) {
@@ -130,7 +117,7 @@ class TableCell extends Block
         $this->_text_align();
         $this->vertical_align();
 
-        // Handle relative positioning
+        
         foreach ($frame->get_children() as $child) {
             $this->position_relative($child);
         }
@@ -138,23 +125,23 @@ class TableCell extends Block
 
     public function get_min_max_content_width(): array
     {
-        // Ignore percentage values for a specified width here, as they are
-        // relative to the table width, which is not determined yet
+        
+        
         $style = $this->_frame->get_style();
         $width = $style->width;
         $fixed_width = $width !== "auto" && !Helpers::is_percent($width);
 
         [$min, $max] = $this->get_min_max_child_width();
 
-        // For table cells: Use specified width if it is greater than the
-        // minimum defined by the content
+        
+        
         if ($fixed_width) {
             $width = (float) $style->length_in_pt($width, 0);
             $min = max($width, $min);
             $max = $min;
         }
 
-        // Handle min/max width style properties
+        
         $min_width = $this->resolve_min_width(null);
         $max_width = $this->resolve_max_width(null);
         $min = Helpers::clamp($min, $min_width, $max_width);

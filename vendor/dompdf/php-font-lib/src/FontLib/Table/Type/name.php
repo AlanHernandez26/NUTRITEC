@@ -1,20 +1,12 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib\Table\Type;
 
 use FontLib\Table\Table;
 use FontLib\Font;
 
-/**
- * `name` font table.
- *
- * @package php-font-lib
- */
+
 class name extends Table {
   private static $header_format = array(
     "format"       => self::uint16,
@@ -58,7 +50,7 @@ class name extends Table {
     12 => "FontDesignerURL",
     13 => "LicenseDescription",
     14 => "LicenseURL",
-    // 15
+    
     16 => "PreferredFamily",
     17 => "PreferredSubfamily",
     18 => "CompatibleFullName",
@@ -68,12 +60,12 @@ class name extends Table {
   static $platforms = array(
     0 => "Unicode",
     1 => "Macintosh",
-    // 2 =>  Reserved
+    
     3 => "Microsoft",
   );
 
   static $platformSpecific = array(
-    // Unicode
+    
     0 => array(
       0 => "Default semantics",
       1 => "Version 1.1 semantics",
@@ -81,7 +73,7 @@ class name extends Table {
       3 => "Unicode 2.0 or later semantics",
     ),
 
-    // Macintosh
+    
     1 => array(
       0  => "Roman",
       1  => "Japanese",
@@ -117,7 +109,7 @@ class name extends Table {
       31 => "Sindhi",
     ),
 
-    // Microsoft
+    
     3 => array(
       0  => "Symbol",
       1  => "Unicode BMP (UCS-2)",
@@ -126,9 +118,9 @@ class name extends Table {
       4  => "Big5",
       5  => "Wansung",
       6  => "Johab",
-      //  7 => Reserved
-      //  8 => Reserved
-      //  9 => Reserved
+      
+      
+      
       10 => "Unicode UCS-4",
     ),
   );
@@ -203,18 +195,18 @@ class name extends Table {
   protected function _encode() {
     $font = $this->getFont();
 
-    /** @var nameRecord[] $records */
+    
     $records       = $this->data["records"];
     $count_records = \count($records);
 
     $this->data["count"]        = $count_records;
-    $this->data["stringOffset"] = 6 + ($count_records * 12); // 6 => uint16 * 3, 12 => sizeof self::$record_format
+    $this->data["stringOffset"] = 6 + ($count_records * 12); 
 
     $length = $font->pack(self::$header_format, $this->data);
 
     $offset = 0;
 
-    /** @var nameRecord[] $records_to_encode */
+    
     $records_to_encode = array();
     foreach ($records as $record) {
       $encoded_record = new nameRecord();

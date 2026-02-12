@@ -1,21 +1,11 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib\WOFF;
 
 use FontLib\Table\DirectoryEntry;
 
-/**
- * WOFF font file.
- *
- * @package php-font-lib
- *
- * @property TableDirectoryEntry[] $directory
- */
+
 class File extends \FontLib\TrueType\File {
   function parseHeader() {
     if (!empty($this->header)) {
@@ -39,7 +29,7 @@ class File extends \FontLib\TrueType\File {
     $offset  = $this->header->encode();
 
     foreach ($this->directory as $entry) {
-      // Read ...
+      
       $this->f = $fr;
       $this->seek($entry->offset);
       $data = $this->read($entry->length);
@@ -48,23 +38,23 @@ class File extends \FontLib\TrueType\File {
         $data = (string) gzuncompress($data);
       }
 
-      // Prepare data ...
+      
       $length        = mb_strlen($data, '8bit');
       $entry->length = $entry->origLength = $length;
       $entry->offset = $dataOffset;
 
-      // Write ...
+      
       $this->f = $fw;
 
-      // Woff Entry
+      
       $this->seek($offset);
-      $offset += $this->write($entry->tag, 4); // tag
-      $offset += $this->writeUInt32($dataOffset); // offset
-      $offset += $this->writeUInt32($length); // length
-      $offset += $this->writeUInt32($length); // origLength
-      $offset += $this->writeUInt32(DirectoryEntry::computeChecksum($data)); // checksum
+      $offset += $this->write($entry->tag, 4); 
+      $offset += $this->writeUInt32($dataOffset); 
+      $offset += $this->writeUInt32($length); 
+      $offset += $this->writeUInt32($length); 
+      $offset += $this->writeUInt32(DirectoryEntry::computeChecksum($data)); 
 
-      // Data
+      
       $this->seek($dataOffset);
       $dataOffset += $this->write($data, $length);
     }
@@ -72,7 +62,7 @@ class File extends \FontLib\TrueType\File {
     $this->f = $fw;
     $this->seek(0);
 
-    // Need to re-parse this, don't know why
+    
     $this->header    = null;
     $this->directory = array();
     $this->parseTableEntries();

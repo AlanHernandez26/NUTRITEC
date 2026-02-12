@@ -15,7 +15,7 @@ if (!isset($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-// Obtener datos del producto
+
 $stmt = $conexion->prepare("SELECT * FROM productos WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt_up->execute()) {
             $mensaje = "Producto actualizado correctamente.";
-            // Actualizar datos actuales para mostrar en el formulario
+            
             $producto['nombre'] = $nombre;
             $producto['descripcion'] = $descripcion;
             $producto['costo'] = $costo;

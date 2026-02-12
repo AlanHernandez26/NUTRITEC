@@ -16,7 +16,7 @@ if (empty($carrito)) {
 
 $total = 0;
 
-// Calcular total y obtener detalles de productos
+
 $productos = [];
 foreach ($carrito as $id => $cantidad) {
     $stmt = $conexion->prepare("SELECT id, nombre, costo FROM productos WHERE id = ?");
@@ -33,12 +33,12 @@ foreach ($carrito as $id => $cantidad) {
     $stmt->close();
 }
 
-// Procesar formulario al confirmar compra
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario_id = $_SESSION['usuario']['id'];
     $metodo_pago = $_POST['metodo_pago'] ?? 'efectivo';
 
-    // Validación backend según método de pago
+    
     if ($metodo_pago === 'tarjeta') {
         $num_tarjeta = $_POST['numero_tarjeta'] ?? '';
         $nombre_tarjeta = $_POST['nombre_tarjeta'] ?? '';
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Datos de tarjeta inválidos.";
             exit;
         }
-        // No almacenamos datos de tarjeta por seguridad.
+        
     } elseif ($metodo_pago === 'transferencia') {
         $referencia = trim($_POST['referencia_transferencia'] ?? '');
         if (empty($referencia)) {
@@ -60,15 +60,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
     } else {
-        // Para efectivo o cualquier otro método simple
+        
         $referencia = null;
     }
 
     $conexion->begin_transaction();
 
     try {
-        // Insertar pedido
-        // Asumo que en la tabla pedidos hay columna referencia_transferencia que puede ser NULL
+        
+        
         $sql_pedido = "INSERT INTO pedidos (usuario_id, total, metodo_pago, referencia_transferencia) VALUES (?, ?, ?, ?)";
         $stmt_pedido = $conexion->prepare($sql_pedido);
         $stmt_pedido->bind_param("idss", $usuario_id, $total, $metodo_pago, $referencia);
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pedido_id = $stmt_pedido->insert_id;
         $stmt_pedido->close();
 
-        // Insertar detalles
+        
         $sql_detalle = "INSERT INTO detalles_pedido (pedido_id, producto_id, cantidad, subtotal) VALUES (?, ?, ?, ?)";
         $stmt_detalle = $conexion->prepare($sql_detalle);
 
@@ -89,10 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $conexion->commit();
 
-        // Vaciar carrito
+        
         unset($_SESSION['carrito']);
 
-        // Redirigir a confirmación
+        
         header("Location: confirmacion_compra.php?pedido_id=$pedido_id");
         exit;
 
@@ -108,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Checkout - NutriTec</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
@@ -210,7 +211,7 @@ function validarPago() {
     return true;
 }
 
-// Ejecutar al cargar para ocultar/mostrar correctamente
+
 mostrarCamposPago();
 </script>
 </body>

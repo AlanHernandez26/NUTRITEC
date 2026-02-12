@@ -1,22 +1,12 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace FontLib;
 
 use FontLib\TrueType\File;
 
-/**
- * Font header container.
- *
- * @package php-font-lib
- */
+
 abstract class Header extends BinaryStream {
-  /**
-   * @var File
-   */
+  
   protected $font;
   protected $def = array();
 

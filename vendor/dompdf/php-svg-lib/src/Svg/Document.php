@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg;
 
@@ -42,16 +38,16 @@ class Document extends AbstractTag
     protected $pathBBox;
     protected $viewBox;
 
-    /** @var SurfaceInterface */
+    
     protected $surface;
 
-    /** @var AbstractTag[] */
+    
     protected $stack = array();
 
-    /** @var AbstractTag[] */
+    
     protected $defs = array();
 
-    /** @var \Sabberworm\CSS\CSSList\Document[] */
+    
     protected $styleSheets = array();
 
     public $allowExternalReferences = true;
@@ -81,22 +77,14 @@ class Document extends AbstractTag
 
     }
 
-    /**
-     * Increase the nesting level for defs-like elements
-     *
-     * @return int
-     */
+    
     public function enterDefs () {
         $this->_defs_depth++;
         $this->inDefs = true;
         return $this->_defs_depth;
     }
 
-    /**
-     * Decrease the nesting level for defs-like elements
-     *
-     * @return int
-     */
+    
     public function exitDefs () {
         $this->_defs_depth--;
         if ($this->_defs_depth < 0) {
@@ -106,9 +94,7 @@ class Document extends AbstractTag
         return $this->_defs_depth;
     }
 
-    /**
-     * @return SurfaceInterface
-     */
+    
     public function getSurface()
     {
         return $this->surface;
@@ -207,20 +193,12 @@ class Document extends AbstractTag
         return $this;
     }
 
-    /**
-     * Append a style sheet
-     *
-     * @param \Sabberworm\CSS\CSSList\Document $stylesheet
-     */
+    
     public function appendStyleSheet($stylesheet) {
         $this->styleSheets[] = $stylesheet;
     }
 
-    /**
-     * Get the document style sheets
-     *
-     * @return \Sabberworm\CSS\CSSList\Document[]
-     */
+    
     public function getStyleSheets() {
         return $this->styleSheets;
     }
@@ -379,7 +357,7 @@ class Document extends AbstractTag
                 $this->defs[$attributes["id"]] = $tag;
             }
             else {
-                /** @var AbstractTag $top */
+                
                 $top = end($this->stack);
                 if ($top && $top != $tag) {
                     $top->children[] = $tag;
@@ -403,7 +381,7 @@ class Document extends AbstractTag
 
     function _tagEnd($parser, $name)
     {
-        /** @var AbstractTag $tag */
+        
         $tag = null;
         switch (strtolower($name)) {
             case 'defs':

@@ -1,17 +1,9 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib;
 
-/**
- * Encoding map used to map a code point to a Unicode char.
- *
- * @package php-font-lib
- */
+
 class EncodingMap {
   private $f;
 

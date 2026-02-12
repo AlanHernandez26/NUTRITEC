@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg\Tag;
 
@@ -18,7 +14,7 @@ class LinearGradient extends AbstractTag
     protected $x2;
     protected $y2;
 
-    /** @var Gradient\Stop[] */
+    
     protected $stops = array();
 
     public function start($attributes)
@@ -49,7 +45,7 @@ class LinearGradient extends AbstractTag
                 $_stop = new Gradient\Stop();
                 $_attributes = $_child->attributes;
 
-                // Style
+                
                 if (isset($_attributes["style"])) {
                     $_style = Style::parseCssStyle($_attributes["style"]);
 
@@ -62,7 +58,7 @@ class LinearGradient extends AbstractTag
                     }
                 }
 
-                // Attributes
+                
                 if (isset($_attributes["offset"])) {
                     $_stop->offset = $_attributes["offset"];
                 }

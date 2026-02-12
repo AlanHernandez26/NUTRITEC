@@ -3,9 +3,7 @@ namespace Dompdf\Css\Content;
 
 final class Url extends ContentPart
 {
-    /**
-     * @var string
-     */
+    
     public $url;
 
     public function __construct(string $url)

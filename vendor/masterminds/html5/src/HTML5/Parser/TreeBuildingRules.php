@@ -2,17 +2,7 @@
 
 namespace Masterminds\HTML5\Parser;
 
-/**
- * Handles special-case rules for the DOM tree builder.
- *
- * Many tags have special rules that need to be accomodated on an
- * individual basis. This class handles those rules.
- *
- * See section 8.1.2.4 of the spec.
- *
- * @todo - colgroup and col special behaviors
- *       - body and head special behaviors
- */
+
 class TreeBuildingRules
 {
     protected static $tags = array(
@@ -32,21 +22,13 @@ class TreeBuildingRules
         'option' => 1,
     );
 
-    /**
-     * Returns true if the given tagname has special processing rules.
-     */
+    
     public function hasRules($tagname)
     {
         return isset(static::$tags[$tagname]);
     }
 
-    /**
-     * Evaluate the rule for the current tag name.
-     *
-     * This may modify the existing DOM.
-     *
-     * @return \DOMElement The new Current DOM element.
-     */
+    
     public function evaluate($new, $current)
     {
         switch ($new->tagName) {
@@ -79,7 +61,7 @@ class TreeBuildingRules
             case 'tbody':
             case 'thead':
             case 'tfoot':
-            case 'table': // Spec isn't explicit about this, but it's necessary.
+            case 'table': 
 
                 return $this->closeIfCurrentMatches($new, $current, array(
                     'thead',

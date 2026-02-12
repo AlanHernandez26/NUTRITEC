@@ -2,19 +2,10 @@
 
 namespace Sabberworm\CSS\Property;
 
-/**
- * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
- * class.
- */
+
 class Selector
 {
-    /**
-     * regexp for specificity calculations
-     *
-     * @var string
-     *
-     * @internal
-     */
+    
     const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
         (\.[\w]+)                   # classes
         |
@@ -34,13 +25,7 @@ class Selector
         ))
         /ix';
 
-    /**
-     * regexp for specificity calculations
-     *
-     * @var string
-     *
-     * @internal
-     */
+    
     const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
         ((^|[\s\+\>\~]+)[\w]+   # elements
         |
@@ -49,13 +34,7 @@ class Selector
         ))
         /ix';
 
-    /**
-     * regexp for specificity calculations
-     *
-     * @var string
-     *
-     * @internal since 8.5.2
-     */
+    
     const SELECTOR_VALIDATION_RX = '/
         ^(
             (?:
@@ -66,32 +45,19 @@ class Selector
         )$
         /ux';
 
-    /**
-     * @var string
-     */
+    
     private $sSelector;
 
-    /**
-     * @var int|null
-     */
+    
     private $iSpecificity;
 
-    /**
-     * @param string $sSelector
-     *
-     * @return bool
-     *
-     * @internal since V8.8.0
-     */
+    
     public static function isValid($sSelector)
     {
         return preg_match(static::SELECTOR_VALIDATION_RX, $sSelector);
     }
 
-    /**
-     * @param string $sSelector
-     * @param bool $bCalculateSpecificity @deprecated since V8.8.0, will be removed in V9.0.0
-     */
+    
     public function __construct($sSelector, $bCalculateSpecificity = false)
     {
         $this->setSelector($sSelector);
@@ -100,43 +66,31 @@ class Selector
         }
     }
 
-    /**
-     * @return string
-     */
+    
     public function getSelector()
     {
         return $this->sSelector;
     }
 
-    /**
-     * @param string $sSelector
-     *
-     * @return void
-     */
+    
     public function setSelector($sSelector)
     {
         $this->sSelector = trim($sSelector);
         $this->iSpecificity = null;
     }
 
-    /**
-     * @return string
-     *
-     * @deprecated in V8.8.0, will be removed in V9.0.0. Use `render` instead.
-     */
+    
     public function __toString()
     {
         return $this->getSelector();
     }
 
-    /**
-     * @return int
-     */
+    
     public function getSpecificity()
     {
         if ($this->iSpecificity === null) {
             $a = 0;
-            /// @todo should exclude \# as well as "#"
+            
             $aMatches = null;
             $b = substr_count($this->sSelector, '#');
             $c = preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->sSelector, $aMatches);

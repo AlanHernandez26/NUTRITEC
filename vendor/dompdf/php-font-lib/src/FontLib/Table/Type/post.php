@@ -1,19 +1,11 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib\Table\Type;
 use FontLib\Table\Table;
 use FontLib\TrueType\File;
 
-/**
- * `post` font table.
- *
- * @package php-font-lib
- */
+
 class post extends Table {
   protected $def = array(
     "format"             => self::Fixed,
@@ -65,15 +57,15 @@ class post extends Table {
         break;
 
       case 2.5:
-        // TODO
+        
         break;
 
       case 3:
-        // nothing
+        
         break;
 
       case 4:
-        // TODO
+        
         break;
     }
 
@@ -90,53 +82,6 @@ class post extends Table {
     $length = $font->pack($this->def, $data);
 
     return $length;
-    /*
-    $subset = $font->getSubset();
-
-    switch($data["format"]) {
-      case 1:
-        // nothing to do
-      break;
-
-      case 2:
-        $old_names = $data["names"];
-
-        $glyphNameIndex = range(0, count($subset));
-
-        $names = array();
-        foreach($subset as $gid) {
-          $names[] = $data["names"][$data["glyphNameIndex"][$gid]];
-        }
-
-        $numberOfGlyphs = count($names);
-        $length += $font->writeUInt16($numberOfGlyphs);
-
-        foreach($glyphNameIndex as $gni) {
-          $length += $font->writeUInt16($gni);
-        }
-
-        //$names = array_slice($names, 257);
-        foreach($names as $name) {
-          $len = strlen($name);
-          $length += $font->writeUInt8($len);
-          $length += $font->write($name, $len);
-        }
-
-      break;
-
-      case 2.5:
-        // TODO
-      break;
-
-      case 3:
-        // nothing
-      break;
-
-      case 4:
-        // TODO
-      break;
-    }
-
-    return $length;*/
+    
   }
 }

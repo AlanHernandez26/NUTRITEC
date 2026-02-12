@@ -8,7 +8,7 @@ $action = $_GET['action'] ?? 'login';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['tipo']) && $_POST['tipo'] === 'login') {
-        // LOGIN
+        
         $correo = trim($_POST['correo']);
         $password = $_POST['password'];
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "No existe usuario con ese correo.";
         }
     } elseif (isset($_POST['tipo']) && $_POST['tipo'] === 'register') {
-        // REGISTRO
+        
         $nombre = trim($_POST['nombre']);
         $correo = trim($_POST['correo']);
         $password = $_POST['password'];
@@ -84,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><?= $action === 'register' ? 'Registro' : 'Login' ?> - NutriTec</title>
   <link rel="stylesheet" href="css/estilos.css" />
 </head>

@@ -1,49 +1,36 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\FrameReflower;
 
 use Dompdf\Helpers;
 use Dompdf\FrameDecorator\Block as BlockFrameDecorator;
 use Dompdf\FrameDecorator\Image as ImageFrameDecorator;
 
-/**
- * Image reflower class
- *
- * @package dompdf
- */
+
 class Image extends AbstractFrameReflower
 {
 
-    /**
-     * Image constructor.
-     * @param ImageFrameDecorator $frame
-     */
+    
     function __construct(ImageFrameDecorator $frame)
     {
         parent::__construct($frame);
     }
 
-    /**
-     * @param BlockFrameDecorator|null $block
-     */
+    
     function reflow(?BlockFrameDecorator $block = null)
     {
         $this->determine_absolute_containing_block();
 
-        // Counters and generated content
+        
         $this->_set_content();
 
-        //FLOAT
-        //$frame = $this->_frame;
-        //$page = $frame->get_root();
+        
+        
+        
 
-        //if ($frame->get_style()->float !== "none" ) {
-        //  $page->add_floating_frame($this);
-        //}
+        
+        
+        
 
         $this->resolve_dimensions();
         $this->resolve_margins();
@@ -58,10 +45,10 @@ class Image extends AbstractFrameReflower
 
     public function get_min_max_content_width(): array
     {
-        // TODO: While the containing block is not set yet on the frame, it can
-        // already be determined in some cases due to fixed dimensions on the
-        // ancestor forming the containing block. In such cases, percentage
-        // values could be resolved here
+        
+        
+        
+        
         $style = $this->_frame->get_style();
 
         [$width] = $this->calculate_size(null, null);
@@ -71,31 +58,19 @@ class Image extends AbstractFrameReflower
             || ($style->width === "auto"
                 && (Helpers::is_percent($style->height) || Helpers::is_percent($style->max_height)));
 
-        // Use the specified min width as minimum when width or max width depend
-        // on the containing block and cannot be resolved yet. This mimics
-        // browser behavior
+        
+        
+        
         $min = $percent_width ? $min_width : $width;
         $max = $width;
 
         return [$min, $max];
     }
 
-    /**
-     * Calculate width and height, accounting for min/max constraints.
-     *
-     * * https://www.w3.org/TR/CSS21/visudet.html#inline-replaced-width
-     * * https://www.w3.org/TR/CSS21/visudet.html#inline-replaced-height
-     * * https://www.w3.org/TR/CSS21/visudet.html#min-max-widths
-     * * https://www.w3.org/TR/CSS21/visudet.html#min-max-heights
-     *
-     * @param float|null $cbw Width of the containing block.
-     * @param float|null $cbh Height of the containing block.
-     *
-     * @return float[]
-     */
+    
     protected function calculate_size(?float $cbw, ?float $cbh): array
     {
-        /** @var ImageFrameDecorator */
+        
         $frame = $this->_frame;
         $style = $frame->get_style();
 
@@ -114,13 +89,13 @@ class Image extends AbstractFrameReflower
         $max_height = $this->resolve_max_height($cbh);
 
         if ($width === "auto" && $height === "auto") {
-            // Use intrinsic dimensions, resampled to pt
+            
             [$img_width, $img_height] = $frame->get_intrinsic_dimensions();
             $w = $frame->resample($img_width);
             $h = $frame->resample($img_height);
 
-            // Resolve min/max constraints according to the constraint-violation
-            // table in https://www.w3.org/TR/CSS21/visudet.html#min-max-widths
+            
+            
             $max_width = max($min_width, $max_width);
             $max_height = max($min_height, $max_height);
 
@@ -138,19 +113,19 @@ class Image extends AbstractFrameReflower
                 $width = Helpers::clamp($width, $min_width, $max_width);
             }
         } elseif ($height === "auto") {
-            // Width is fixed, scale height according to aspect ratio
+            
             [$img_width, $img_height] = $frame->get_intrinsic_dimensions();
             $width = Helpers::clamp((float) $width, $min_width, $max_width);
             $height = $width * ($img_height / $img_width);
             $height = Helpers::clamp($height, $min_height, $max_height);
         } elseif ($width === "auto") {
-            // Height is fixed, scale width according to aspect ratio
+            
             [$img_width, $img_height] = $frame->get_intrinsic_dimensions();
             $height = Helpers::clamp((float) $height, $min_height, $max_height);
             $width = $height * ($img_width / $img_height);
             $width = Helpers::clamp($width, $min_width, $max_width);
         } else {
-            // Width and height are fixed
+            
             $width = Helpers::clamp((float) $width, $min_width, $max_width);
             $height = Helpers::clamp((float) $height, $min_height, $max_height);
         }
@@ -160,7 +135,7 @@ class Image extends AbstractFrameReflower
 
     protected function resolve_dimensions(): void
     {
-        /** @var ImageFrameDecorator */
+        
         $frame = $this->_frame;
         $style = $frame->get_style();
 
@@ -192,9 +167,9 @@ class Image extends AbstractFrameReflower
 
     protected function resolve_margins(): void
     {
-        // Only handle the inline case for now
-        // https://www.w3.org/TR/CSS21/visudet.html#inline-replaced-width
-        // https://www.w3.org/TR/CSS21/visudet.html#inline-replaced-height
+        
+        
+        
         $style = $this->_frame->get_style();
 
         if ($style->margin_left === "auto") {

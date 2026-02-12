@@ -1,18 +1,10 @@
 <?php
-/**
- * @package php-font-lib
- * @link    https://github.com/dompdf/php-font-lib
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 
 namespace FontLib\Table\Type;
 use FontLib\Table\Table;
 
-/**
- * `OS/2` font table.
- *
- * @package php-font-lib
- */
+
 class os2 extends Table {
   protected $def = array(
     "version"             => self::uint16,

@@ -14,7 +14,7 @@ if (!isset($_GET['pedido_id'])) {
 
 $pedido_id = intval($_GET['pedido_id']);
 
-// Consultar pedido
+
 $sql = "SELECT p.id, p.total, p.metodo_pago, p.creado_en
         FROM pedidos p
         WHERE p.id = ? AND p.usuario_id = ?";
@@ -32,7 +32,7 @@ if ($resultado->num_rows === 0) {
 $pedido = $resultado->fetch_assoc();
 $stmt->close();
 
-// Consultar productos del pedido
+
 $sql_detalles = "SELECT dp.cantidad, dp.subtotal, pr.nombre
                  FROM detalles_pedido dp
                  JOIN productos pr ON dp.producto_id = pr.id
@@ -51,12 +51,13 @@ $detalles = $stmt_detalle->get_result();
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 <header>
     <h1>Compra realizada con éxito</h1>
 </header>
 
 <section style="max-width: 600px; margin: auto; padding: 20px;">
-    <h2>Detalles del pedido #<?php echo htmlspecialchars($pedido['id']); ?></h2>
+    <h2>Detalles del pedido 
     <p><strong>Fecha:</strong> <?php echo date("d/m/Y H:i", strtotime($pedido['creado_en'])); ?></p>
     <p><strong>Método de pago:</strong> <?php echo ucfirst(htmlspecialchars($pedido['metodo_pago'])); ?></p>
     <p><strong>Total:</strong> $<?php echo number_format($pedido['total'], 2); ?></p>

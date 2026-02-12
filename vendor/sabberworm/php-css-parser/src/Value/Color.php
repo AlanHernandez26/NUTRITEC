@@ -7,32 +7,16 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
-/**
- * `Color's can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are always stored as an array of
- * ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
- */
+
 class Color extends CSSFunction
 {
-    /**
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aColor
-     * @param int $iLineNo
-     */
+    
     public function __construct(array $aColor, $iLineNo = 0)
     {
         parent::__construct(implode('', array_keys($aColor)), $aColor, ',', $iLineNo);
     }
 
-    /**
-     * @param ParserState $oParserState
-     * @param bool $bIgnoreCase
-     *
-     * @return Color|CSSFunction
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     *
-     * @internal since V8.8.0
-     */
+    
     public static function parse(ParserState $oParserState, $bIgnoreCase = false)
     {
         $aColor = [];
@@ -89,7 +73,7 @@ class Color extends CSSFunction
                 }
 
                 if ($bContainsVar && $oParserState->comes(')')) {
-                    // With a var argument the function can have fewer arguments
+                    
                     break;
                 }
 
@@ -107,15 +91,7 @@ class Color extends CSSFunction
         return new Color($aColor, $oParserState->currentLine());
     }
 
-    /**
-     * @param float $fVal
-     * @param float $fFromMin
-     * @param float $fFromMax
-     * @param float $fToMin
-     * @param float $fToMax
-     *
-     * @return float
-     */
+    
     private static function mapRange($fVal, $fFromMin, $fFromMax, $fToMin, $fToMax)
     {
         $fFromRange = $fFromMax - $fFromMin;
@@ -126,51 +102,35 @@ class Color extends CSSFunction
         return $fNewVal + $fToMin;
     }
 
-    /**
-     * @return array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
-     */
+    
     public function getColor()
     {
         return $this->aComponents;
     }
 
-    /**
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aColor
-     *
-     * @return void
-     */
+    
     public function setColor(array $aColor)
     {
         $this->setName(implode('', array_keys($aColor)));
         $this->aComponents = $aColor;
     }
 
-    /**
-     * @return string
-     */
+    
     public function getColorDescription()
     {
         return $this->getName();
     }
 
-    /**
-     * @return string
-     *
-     * @deprecated in V8.8.0, will be removed in V9.0.0. Use `render` instead.
-     */
+    
     public function __toString()
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @param OutputFormat|null $oOutputFormat
-     *
-     * @return string
-     */
+    
     public function render($oOutputFormat)
     {
-        // Shorthand RGB color values
+        
         if ($oOutputFormat->getRGBHashNotation() && implode('', array_keys($this->aComponents)) === 'rgb') {
             $sResult = sprintf(
                 '%02x%02x%02x',

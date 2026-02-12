@@ -1,9 +1,5 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\Frame;
 
 use Dompdf\Dompdf;
@@ -15,34 +11,14 @@ use Dompdf\FrameReflower\Page as PageFrameReflower;
 use Dompdf\Positioner\AbstractPositioner;
 use DOMXPath;
 
-/**
- * Contains frame decorating logic
- *
- * This class is responsible for assigning the correct {@link AbstractFrameDecorator},
- * {@link AbstractPositioner}, and {@link AbstractFrameReflower} objects to {@link Frame}
- * objects.  This is determined primarily by the Frame's display type, but
- * also by the Frame's node's type (e.g. DomElement vs. #text)
- *
- * @package dompdf
- */
+
 class Factory
 {
 
-    /**
-     * Array of positioners for specific frame types
-     *
-     * @var AbstractPositioner[]
-     */
+    
     protected static $_positioners;
 
-    /**
-     * Decorate the root Frame
-     *
-     * @param Frame  $root   The frame to decorate
-     * @param Dompdf $dompdf The dompdf instance
-     *
-     * @return PageFrameDecorator
-     */
+    
     public static function decorate_root(Frame $root, Dompdf $dompdf): PageFrameDecorator
     {
         $frame = new PageFrameDecorator($root, $dompdf);
@@ -52,17 +28,7 @@ class Factory
         return $frame;
     }
 
-    /**
-     * Decorate a Frame
-     *
-     * @param Frame      $frame  The frame to decorate
-     * @param Dompdf     $dompdf The dompdf instance
-     * @param Frame|null $root   The root of the frame
-     *
-     * @throws Exception
-     * @return AbstractFrameDecorator|null
-     * FIXME: this is admittedly a little smelly...
-     */
+    
     public static function decorate_frame(Frame $frame, Dompdf $dompdf, ?Frame $root = null): ?AbstractFrameDecorator
     {
         $style = $frame->get_style();
@@ -162,7 +128,7 @@ class Factory
             default:
             case "none":
                 if ($style->_dompdf_keep !== "yes") {
-                    // Remove the node and the frame
+                    
                     $frame->get_parent()->remove_child($frame);
                     return null;
                 }
@@ -173,7 +139,7 @@ class Factory
                 break;
         }
 
-        // Handle CSS position
+        
         $position = $style->position;
 
         if ($position === "absolute") {
@@ -184,7 +150,7 @@ class Factory
 
         $node = $frame->get_node();
 
-        // Handle nodeName
+        
         if ($node->nodeName === "img") {
             $style->set_prop("display", "-dompdf-image");
             $decorator = "Image";
@@ -194,7 +160,7 @@ class Factory
         $decorator  = "Dompdf\\FrameDecorator\\$decorator";
         $reflower   = "Dompdf\\FrameReflower\\$reflower";
 
-        /** @var AbstractFrameDecorator $deco */
+        
         $deco = new $decorator($frame, $dompdf);
 
         $deco->set_positioner(self::getPositionerInstance($positioner));
@@ -205,9 +171,9 @@ class Factory
         }
 
         if ($display === "list-item") {
-            // Insert a list-bullet frame
+            
             $xml = $dompdf->getDom();
-            $bullet_node = $xml->createElement("bullet"); // arbitrary choice
+            $bullet_node = $xml->createElement("bullet"); 
             $b_f = new Frame($bullet_node);
 
             $node = $frame->get_node();
@@ -244,13 +210,7 @@ class Factory
         return $deco;
     }
 
-    /**
-     * Creates Positioners
-     *
-     * @param string $type Type of positioner to use
-     *
-     * @return AbstractPositioner
-     */
+    
     protected static function getPositionerInstance(string $type): AbstractPositioner
     {
         if (!isset(self::$_positioners[$type])) {

@@ -1,9 +1,5 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf;
 
 use Dompdf\FrameDecorator\AbstractFrameDecorator;
@@ -14,87 +10,49 @@ use Dompdf\FrameReflower\Text as TextFrameReflower;
 use Dompdf\Positioner\Inline as InlinePositioner;
 use Iterator;
 
-/**
- * The line box class
- *
- * This class represents a line box
- * http://www.w3.org/TR/CSS2/visuren.html#line-box
- *
- * @package dompdf
- */
+
 class LineBox
 {
-    /**
-     * @var Block
-     */
+    
     protected $_block_frame;
 
-    /**
-     * @var AbstractFrameDecorator[]
-     */
+    
     protected $_frames = [];
 
-    /**
-     * @var ListBullet[]
-     */
+    
     protected $list_markers = [];
 
-    /**
-     * @var int
-     */
+    
     public $wc = 0;
 
-    /**
-     * @var float
-     */
+    
     public $y = 0.0;
 
-    /**
-     * @var float
-     */
+    
     public $w = 0.0;
 
-    /**
-     * @var float
-     */
+    
     public $h = 0.0;
 
-    /**
-     * @var float
-     */
+    
     public $left = 0.0;
 
-    /**
-     * @var float
-     */
+    
     public $right = 0.0;
 
-    /**
-     * @var AbstractFrameDecorator
-     */
+    
     public $tallest_frame = null;
 
-    /**
-     * @var bool[]
-     */
+    
     public $floating_blocks = [];
 
-    /**
-     * @var bool
-     */
+    
     public $br = false;
 
-    /**
-     * Whether the line box contains any inline-positioned frames.
-     *
-     * @var bool
-     */
+    
     public $inline = false;
 
-    /**
-     * @param Block $frame the Block containing this line
-     * @param float $y
-     */
+    
     public function __construct(Block $frame, float $y = 0.0)
     {
         $this->_block_frame = $frame;
@@ -104,13 +62,7 @@ class LineBox
         $this->get_float_offsets();
     }
 
-    /**
-     * Returns the floating elements inside the first floating parent
-     *
-     * @param Page $root
-     *
-     * @return Frame[]
-     */
+    
     public function get_floats_inside(Page $root): array
     {
         $floating_frames = $root->get_floating_frames();
@@ -119,7 +71,7 @@ class LineBox
             return $floating_frames;
         }
 
-        // Find nearest floating element
+        
         $p = $this->_block_frame;
         while ($p->get_style()->float === "none") {
             $parent = $p->get_parent();
@@ -154,7 +106,7 @@ class LineBox
 
     public function get_float_offsets(): void
     {
-        static $anti_infinite_loop = 10000; // FIXME smelly hack
+        static $anti_infinite_loop = 10000; 
 
         $reflower = $this->_block_frame->get_reflower();
 
@@ -200,7 +152,7 @@ class LineBox
                 continue;
             }
 
-            // If the child is still shifted by the floating element
+            
             if ($anti_infinite_loop-- > 0 &&
                 $floating_frame->get_position("y") + $floating_frame->get_margin_height() >= $this->y &&
                 $block->get_position("x") + $block->get_margin_width() >= $floating_frame->get_position("x")
@@ -220,7 +172,7 @@ class LineBox
                 }
 
                 $this->floating_blocks[$id] = true;
-            } // else, the floating element won't shift anymore
+            } 
             else {
                 $root->remove_floating_frame($child_key);
             }
@@ -236,41 +188,31 @@ class LineBox
         }
     }
 
-    /**
-     * @return float
-     */
+    
     public function get_width(): float
     {
         return $this->left + $this->w + $this->right;
     }
 
-    /**
-     * @return Block
-     */
+    
     public function get_block_frame(): Block
     {
         return $this->_block_frame;
     }
 
-    /**
-     * @return AbstractFrameDecorator[]
-     */
+    
     public function &get_frames(): array
     {
         return $this->_frames;
     }
 
-    /**
-     * @return bool
-     */
+    
     public function is_empty(): bool
     {
         return $this->_frames === [];
     }
 
-    /**
-     * @param AbstractFrameDecorator $frame
-     */
+    
     public function add_frame(Frame $frame): void
     {
         $this->_frames[] = $frame;
@@ -280,12 +222,7 @@ class LineBox
         }
     }
 
-    /**
-     * Remove the frame at the given index and all following frames from the
-     * line.
-     *
-     * @param int $index
-     */
+    
     public function remove_frames(int $index): void
     {
         $lastIndex = count($this->_frames) - 1;
@@ -300,10 +237,10 @@ class LineBox
             $this->w -= $f->get_margin_width();
         }
 
-        // Reset array indices
+        
         $this->_frames = array_values($this->_frames);
 
-        // Recalculate the height of the line
+        
         $h = 0.0;
         $this->inline = false;
 
@@ -318,34 +255,19 @@ class LineBox
         $this->h = $h;
     }
 
-    /**
-     * Get the `outside` positioned list markers to be vertically aligned with
-     * the line box.
-     *
-     * @return ListBullet[]
-     */
+    
     public function get_list_markers(): array
     {
         return $this->list_markers;
     }
 
-    /**
-     * Add a list marker to the line box.
-     *
-     * The list marker is only added for the purpose of vertical alignment, it
-     * is not actually added to the list of frames of the line box.
-     */
+    
     public function add_list_marker(ListBullet $marker): void
     {
         $this->list_markers[] = $marker;
     }
 
-    /**
-     * An iterator of all list markers and inline positioned frames of the line
-     * box.
-     *
-     * @return Iterator<AbstractFrameDecorator>
-     */
+    
     public function frames_to_align(): Iterator
     {
         yield from $this->list_markers;
@@ -357,9 +279,7 @@ class LineBox
         }
     }
 
-    /**
-     * Trim trailing whitespace from the line.
-     */
+    
     public function trim_trailing_ws(): void
     {
         $lastIndex = count($this->_frames) - 1;
@@ -377,11 +297,7 @@ class LineBox
         }
     }
 
-    /**
-     * Recalculate LineBox width based on the contained frames total width.
-     *
-     * @return float
-     */
+    
     public function recalculate_width(): float
     {
         $width = 0.0;

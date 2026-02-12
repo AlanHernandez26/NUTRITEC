@@ -18,8 +18,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
 <header>
     <h1>Panel Administrador</h1>
     <nav>
-        <!--<a href="../index.php">Inicio</a>
-        <a href="dashboard.php">Dashboard</a>-->
+        
         <?php include 'menu.php'; ?>
         <a href="../logout.php">Cerrar sesión</a>
     </nav>
@@ -28,7 +27,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
 <section style="padding: 20px;">
     <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></h2>
     <p>Aquí puedes gestionar el catálogo de productos, los platillos más pedidos e información general.</p>
-    <!-- Aquí puedes agregar enlaces o botones para modificar productos -->
+    
 </section>
 </body>
 </html>

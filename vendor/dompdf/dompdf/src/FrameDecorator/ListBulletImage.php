@@ -1,49 +1,25 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf\FrameDecorator;
 
 use Dompdf\Dompdf;
 use Dompdf\Frame;
 use Dompdf\Image\Cache;
 
-/**
- * Decorates frames for list bullets with custom images
- *
- * @package dompdf
- */
+
 class ListBulletImage extends ListBullet
 {
 
-    /**
-     * The underlying image frame
-     *
-     * @var Image
-     */
+    
     protected $_img;
 
-    /**
-     * The image's width in pixels
-     *
-     * @var float
-     */
+    
     protected $_width;
 
-    /**
-     * The image's height in pixels
-     *
-     * @var float
-     */
+    
     protected $_height;
 
-    /**
-     * ListBulletImage constructor.
-     * @param Frame $frame
-     * @param Dompdf $dompdf
-     */
+    
     function __construct(Frame $frame, Dompdf $dompdf)
     {
         $style = $frame->get_style();
@@ -58,7 +34,7 @@ class ListBulletImage extends ListBullet
             $this->_width = parent::get_width();
             $this->_height = parent::get_height();
         } else {
-            // Resample the bullet image to be consistent with 'auto' sized images
+            
             [$width, $height] = $this->_img->get_intrinsic_dimensions();
             $this->_width = $this->_img->resample($width);
             $this->_height = $this->_img->resample($height);
@@ -90,20 +66,16 @@ class ListBulletImage extends ListBullet
         $fontHeight = $fontMetrics->getFontHeight($font, $size);
         $baseline = $fontMetrics->getFontBaseline($font, $size);
 
-        // This is the same factor as used in
-        // `FrameDecorator\Text::get_margin_height()`
+        
+        
         $f = $style->line_height / ($size > 0 ? $size : 1);
 
-        // FIXME: Tries to approximate replacing the space above the font
-        // baseline with the image
+        
+        
         return $f * ($fontHeight - $baseline) + $this->_height;
     }
 
-    /**
-     * Return image url
-     *
-     * @return string
-     */
+    
     function get_image_url()
     {
         return $this->_img->get_image_url();

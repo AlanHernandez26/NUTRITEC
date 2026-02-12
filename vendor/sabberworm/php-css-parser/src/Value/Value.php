@@ -8,43 +8,25 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Renderable;
 
-/**
- * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another
- * abstract subclass `ValueList`.
- */
+
 abstract class Value implements Renderable
 {
-    /**
-     * @var int
-     *
-     * @internal since 8.8.0
-     */
+    
     protected $iLineNo;
 
-    /**
-     * @param int $iLineNo
-     */
+    
     public function __construct($iLineNo = 0)
     {
         $this->iLineNo = $iLineNo;
     }
 
-    /**
-     * @param array<array-key, string> $aListDelimiters
-     *
-     * @return RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string
-     *
-     * @throws UnexpectedTokenException
-     * @throws UnexpectedEOFException
-     *
-     * @internal since V8.8.0
-     */
+    
     public static function parseValue(ParserState $oParserState, array $aListDelimiters = [])
     {
-        /** @var array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aStack */
+        
         $aStack = [];
         $oParserState->consumeWhiteSpace();
-        //Build a list of delimiters and parsed values
+        
         while (
             !($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!')
                 || $oParserState->comes(')')
@@ -62,14 +44,14 @@ abstract class Value implements Renderable
                     }
                 }
                 if (!$bFoundDelimiter) {
-                    //Whitespace was the list delimiter
+                    
                     array_push($aStack, ' ');
                 }
             }
             array_push($aStack, self::parsePrimitiveValue($oParserState));
             $oParserState->consumeWhiteSpace();
         }
-        // Convert the list to list objects
+        
         foreach ($aListDelimiters as $sDelimiter) {
             $iStackLength = count($aStack);
             if ($iStackLength === 1) {
@@ -81,7 +63,7 @@ abstract class Value implements Renderable
                     $aNewStack[] = $aStack[$iStartPosition];
                     continue;
                 }
-                $iLength = 2; //Number of elements to be joined
+                $iLength = 2; 
                 for ($i = $iStartPosition + 3; $i < $iStackLength; $i += 2, ++$iLength) {
                     if ($sDelimiter !== $aStack[$i]) {
                         break;
@@ -107,16 +89,7 @@ abstract class Value implements Renderable
         return $aStack[0];
     }
 
-    /**
-     * @param bool $bIgnoreCase
-     *
-     * @return CSSFunction|string
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     *
-     * @internal since V8.8.0
-     */
+    
     public static function parseIdentifierOrFunction(ParserState $oParserState, $bIgnoreCase = false)
     {
         $oAnchor = $oParserState->anchor();
@@ -140,15 +113,7 @@ abstract class Value implements Renderable
         return $mResult;
     }
 
-    /**
-     * @return CSSFunction|CSSString|LineName|Size|URL|string
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     * @throws SourceException
-     *
-     * @internal since V8.8.0
-     */
+    
     public static function parsePrimitiveValue(ParserState $oParserState)
     {
         $oValue = null;
@@ -186,12 +151,7 @@ abstract class Value implements Renderable
         return $oValue;
     }
 
-    /**
-     * @return CSSFunction
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     */
+    
     private static function parseMicrosoftFilter(ParserState $oParserState)
     {
         $sFunction = $oParserState->consumeUntil('(', false, true);
@@ -199,29 +159,22 @@ abstract class Value implements Renderable
         return new CSSFunction($sFunction, $aArguments, ',', $oParserState->currentLine());
     }
 
-    /**
-     * @return string
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     */
+    
     private static function parseUnicodeRangeValue(ParserState $oParserState)
     {
-        $iCodepointMaxLength = 6; // Code points outside BMP can use up to six digits
+        $iCodepointMaxLength = 6; 
         $sRange = "";
         $oParserState->consume("U+");
         do {
             if ($oParserState->comes('-')) {
-                $iCodepointMaxLength = 13; // Max length is 2 six digit code points + the dash(-) between them
+                $iCodepointMaxLength = 13; 
             }
             $sRange .= $oParserState->consume(1);
         } while (strlen($sRange) < $iCodepointMaxLength && preg_match("/[A-Fa-f0-9\?-]/", $oParserState->peek()));
         return "U+{$sRange}";
     }
 
-    /**
-     * @return int
-     */
+    
     public function getLineNo()
     {
         return $this->iLineNo;

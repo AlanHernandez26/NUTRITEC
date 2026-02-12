@@ -1,9 +1,5 @@
 <?php
-/**
- * @package php-svg-lib
- * @link    http://github.com/dompdf/php-svg-lib
- * @license GNU LGPLv3+ http://www.gnu.org/copyleft/lesser.html
- */
+
 
 namespace Svg;
 
@@ -77,11 +73,7 @@ class Style
         );
     }
 
-    /**
-     * @param $attributes
-     *
-     * @return Style
-     */
+    
     public function fromAttributes($attributes)
     {
         $this->fillStyles($attributes);
@@ -114,18 +106,18 @@ class Style
 
         foreach ($stylesheets as $_sc) {
 
-            /** @var \Sabberworm\CSS\RuleSet\DeclarationBlock $_decl */
+            
             foreach ($_sc->getAllDeclarationBlocks() as $_decl) {
 
-                /** @var \Sabberworm\CSS\Property\Selector $_selector */
+                
                 foreach ($_decl->getSelectors() as $_selector) {
                     $_selector = $_selector->getSelector();
 
-                    // Match class name
+                    
                     if ($class !== null) {
                         foreach ($class as $_class) {
                             if ($_selector === ".$_class") {
-                                /** @var \Sabberworm\CSS\Rule\Rule $_rule */
+                                
                                 foreach ($_decl->getRules() as $_rule) {
                                     $styles[$_rule->getRule()] = $_rule->getValue() . "";
                                 }
@@ -135,9 +127,9 @@ class Style
                         }
                     }
 
-                    // Match tag name
+                    
                     if ($_selector === $tag->tagName) {
-                        /** @var \Sabberworm\CSS\Rule\Rule $_rule */
+                        
                         foreach ($_decl->getRules() as $_rule) {
                             $styles[$_rule->getRule()] = $_rule->getValue() . "";
                         }
@@ -222,22 +214,22 @@ class Style
             return [0.0, 0.0, 0.0, 0.0];
         }
 
-        // SVG color name
+        
         if (isset(self::$colorNames[$color])) {
             return self::parseHexColor(self::$colorNames[$color]);
         }
 
-        // Hex color
+        
         if ($color[0] === "#") {
             return self::parseHexColor($color);
         }
 
-        // RGB color
+        
         if (strpos($color, "rgb") !== false) {
             return self::getQuad($color);
         }
 
-        // HSL color
+        
         if (strpos($color, "hsl") !== false) {
             $quad = self::getQuad($color, true);
 
@@ -304,18 +296,18 @@ class Style
             );
         }
 
-        // Gradient
+        
         if (strpos($color, "url(#") !== false) {
             $i = strpos($color, "(");
             $j = strpos($color, ")");
 
-            // Bad url format
+            
             if ($i === false || $j === false) {
                 return null;
             }
 
-            //FIXME: gradients not supported?
-            return null; // trim(substr($color, $i + 1, $j - $i - 1));
+            
+            return null; 
         }
 
         return null;
@@ -325,7 +317,7 @@ class Style
         $i = strpos($color, "(");
         $j = strpos($color, ")");
 
-        // Bad color value
+        
         if ($i === false || $j === false) {
             return null;
         }
@@ -364,7 +356,7 @@ class Style
     {
         $c = array(0.0, 0.0, 0.0, 1.0);
 
-        // #FFFFFF
+        
         if (isset($hex[6])) {
             $c[0] = hexdec(substr($hex, 1, 2));
             $c[1] = hexdec(substr($hex, 3, 2));
@@ -391,13 +383,7 @@ class Style
         return $c;
     }
 
-    /**
-     * Simple CSS parser
-     *
-     * @param $style
-     *
-     * @return array
-     */
+    
     static function parseCssStyle($style)
     {
         $matches = array();

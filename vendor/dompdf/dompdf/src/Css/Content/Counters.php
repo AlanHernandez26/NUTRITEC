@@ -3,19 +3,13 @@ namespace Dompdf\Css\Content;
 
 final class Counters extends ContentPart
 {
-    /**
-     * @var string
-     */
+    
     public $name;
 
-    /**
-     * @var string
-     */
+    
     public $string;
 
-    /**
-     * @var string
-     */
+    
     public $style;
 
     public function __construct(string $name, string $string, string $style)

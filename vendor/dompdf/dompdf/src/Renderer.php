@@ -1,9 +1,5 @@
 <?php
-/**
- * @package dompdf
- * @link    https://github.com/dompdf/dompdf
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- */
+
 namespace Dompdf;
 
 use Dompdf\Renderer\AbstractRenderer;
@@ -16,43 +12,23 @@ use Dompdf\Renderer\TableRow;
 use Dompdf\Renderer\TableRowGroup;
 use Dompdf\Renderer\Text;
 
-/**
- * Concrete renderer
- *
- * Instantiates several specific renderers in order to render any given frame.
- *
- * @package dompdf
- */
+
 class Renderer extends AbstractRenderer
 {
 
-    /**
-     * Array of renderers for specific frame types
-     *
-     * @var AbstractRenderer[]
-     */
+    
     protected $_renderers;
 
-    /**
-     * Cache of the callbacks array
-     *
-     * @var array
-     */
+    
     private $_callbacks;
 
-    /**
-     * Advance the canvas to the next page
-     */
+    
     function new_page()
     {
         $this->_canvas->new_page();
     }
 
-    /**
-     * Render frames recursively
-     *
-     * @param Frame $frame the frame to render
-     */
+    
     public function render(Frame $frame)
     {
         global $_dompdf_debug;
@@ -74,7 +50,7 @@ class Renderer extends AbstractRenderer
         $transformList = $style->transform;
         $hasTransform = $transformList !== [];
 
-        // Starts the CSS transformation
+        
         if ($hasTransform) {
             $this->_canvas->save();
 
@@ -147,17 +123,17 @@ class Renderer extends AbstractRenderer
                     if ($node->getAttribute("type") === "text/php" ||
                         $node->getAttribute("language") === "php"
                     ) {
-                        // Evaluate embedded php scripts
+                        
                         $this->_render_frame("php", $frame);
                     } elseif ($node->getAttribute("type") === "text/javascript" ||
                         $node->getAttribute("language") === "javascript"
                     ) {
-                        // Insert JavaScript
+                        
                         $this->_render_frame("javascript", $frame);
                     }
                 }
 
-                // Don't render children, so skip to next iter
+                
                 return;
 
             default:
@@ -165,7 +141,7 @@ class Renderer extends AbstractRenderer
 
         }
 
-        // Starts the overflow: hidden box
+        
         if ($style->overflow === "hidden") {
             $padding_box = $frame->get_padding_box();
             [$x, $y, $w, $h] = $padding_box;
@@ -183,10 +159,10 @@ class Renderer extends AbstractRenderer
         $stack = [];
 
         foreach ($frame->get_children() as $child) {
-            // < 0 : negative z-index
-            // = 0 : no z-index, no stacking context
-            // = 1 : stacking context without z-index
-            // > 1 : z-index
+            
+            
+            
+            
             $child_style = $child->get_style();
             $child_z_index = $child_style->z_index;
             $z_index = 0;
@@ -208,7 +184,7 @@ class Renderer extends AbstractRenderer
             }
         }
 
-        // Ends the overflow: hidden box
+        
         if ($style->overflow === "hidden") {
             $this->_canvas->clipping_end();
         }
@@ -217,17 +193,11 @@ class Renderer extends AbstractRenderer
             $this->_canvas->restore();
         }
 
-        // Check for end frame callback
+        
         $this->_check_callbacks("end_frame", $frame);
     }
 
-    /**
-     * Check for callbacks that need to be performed when a given event
-     * gets triggered on a frame
-     *
-     * @param string $event The type of event
-     * @param Frame  $frame The frame that event is triggered on
-     */
+    
     protected function _check_callbacks(string $event, Frame $frame): void
     {
         if (!isset($this->_callbacks)) {
@@ -245,14 +215,7 @@ class Renderer extends AbstractRenderer
         }
     }
 
-    /**
-     * Render a single frame
-     *
-     * Creates Renderer objects on demand
-     *
-     * @param string $type type of renderer to use
-     * @param Frame $frame the frame to render
-     */
+    
     protected function _render_frame($type, $frame)
     {
 

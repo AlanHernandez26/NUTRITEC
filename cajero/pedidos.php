@@ -7,10 +7,10 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'cajero') {
     exit;
 }
 
-// Filtrar por estado si se pasa por GET
+
 $estadoFiltro = isset($_GET['estado']) ? $_GET['estado'] : 'todos';
 
-// Preparar consulta según filtro
+
 if ($estadoFiltro === 'todos') {
     $query = "
         SELECT p.id, p.usuario_id, p.total, p.metodo_pago, p.estado, p.creado_en, u.nombre AS nombre_usuario
@@ -69,7 +69,7 @@ $pedidos = $stmt->get_result();
     <?php else: ?>
         <?php while ($pedido = $pedidos->fetch_assoc()): ?>
             <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
-                <h3>Pedido #<?php echo $pedido['id']; ?> - Cliente: <?php echo htmlspecialchars($pedido['nombre_usuario']); ?></h3>
+                <h3>Pedido 
                 <p><strong>Fecha:</strong> <?php echo $pedido['creado_en']; ?></p>
                 <p><strong>Estado:</strong> <?php echo htmlspecialchars($pedido['estado']); ?></p>
                 <p><strong>Método de pago:</strong> <?php echo htmlspecialchars($pedido['metodo_pago']); ?></p>
@@ -106,7 +106,7 @@ $pedidos = $stmt->get_result();
 </html>
 
 <?php
-// Procesar acción de entregar si viene por GET
+
 if (isset($_GET['entregar'])) {
     $id_pedido = intval($_GET['entregar']);
     $stmt_upd = $conexion->prepare("UPDATE pedidos SET estado = 'entregado' WHERE id = ?");
@@ -115,6 +115,6 @@ if (isset($_GET['entregar'])) {
     header("Location: pedidos.php?estado=pendiente");
     exit;
 }
-// Cerrar conexión
+
 $conexion->close();
 ?>

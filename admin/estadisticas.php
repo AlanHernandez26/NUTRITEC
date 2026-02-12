@@ -11,14 +11,14 @@ if ($conn->connect_error) {
     die("Error en conexión: " . $conn->connect_error);
 }
 
-// --- Lógica para manejar el filtro de fecha ---
+
 $fecha_seleccionada = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
 
-// Rango horario del día seleccionado
+
 $inicio = $fecha_seleccionada . ' 07:00:00';
 $fin = $fecha_seleccionada . ' 20:00:00';
 
-// --- Consulta SQL modificada para incluir el nombre del cajero ---
+
 $sql = "SELECT p.id AS pedido_id, p.creado_en, u_cliente.nombre AS nombre_cliente, pr.nombre AS producto, dp.cantidad, pr.costo, dp.subtotal, p.estado, u_cajero.nombre AS nombre_cajero_entrega
         FROM pedidos p
         JOIN usuarios u_cliente ON p.usuario_id = u_cliente.id -- Unir con usuario para obtener nombre del cliente
@@ -40,16 +40,16 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// --- Exportar a Excel ---
+
 if (isset($_GET['exportar'])) {
     header("Content-Type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=ventas_entregadas_" . $fecha_seleccionada . ".xls");
 
-    // Encabezados del Excel
+    
     echo "ID Pedido\tFecha\tCliente\tProducto\tCantidad\tPrecio Unitario\tSubtotal\tEstado\tCajero que entregó\n";
 
     foreach ($ventas as $v) {
-        // Usamos el nombre del cajero obtenido de la consulta
+        
         $nombre_cajero_entrega = $v['nombre_cajero_entrega'] ? htmlspecialchars($v['nombre_cajero_entrega']) : "N/A";
 
         echo "{$v['pedido_id']}\t{$v['creado_en']}\t{$v['nombre_cliente']}\t{$v['producto']}\t{$v['cantidad']}\t{$v['costo']}\t{$v['subtotal']}\t{$v['estado']}\t{$nombre_cajero_entrega}\n";
@@ -65,13 +65,13 @@ if (isset($_GET['exportar'])) {
     <title>Estadísticas de Ventas Entregadas</title>
     <link rel="stylesheet" href="../css/estilos.css">
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
-        header { background: linear-gradient(to right, #00704A, #1E3932); color: white; padding: 10px; text-align: center; }
+        body { font-family: Arial, sans-serif; background: 
+        header { background: linear-gradient(to right, 
         nav a { color: white; margin: 0 15px; text-decoration: none; }
         .container { width: 90%; margin: auto; padding: 20px; }
         table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
-        th, td { padding: 8px; border-bottom: 1px solid #ccc; text-align: left; }
-        .btn-exportar { background-color: #4CAF50; color: white; padding: 6px 15px; border: none; text-decoration: none; border-radius: 5px; margin-top: 10px; display: inline-block;}
+        th, td { padding: 8px; border-bottom: 1px solid 
+        .btn-exportar { background-color: 
         .filtro-fecha { margin-bottom: 20px; }
         .filtro-fecha label { margin-right: 10px; }
     </style>
@@ -88,7 +88,7 @@ if (isset($_GET['exportar'])) {
 <main class="container">
     <h2>Ventas Entregadas (7:00 a.m. - 8:00 p.m.)</h2>
 
-    <!-- Formulario de filtro por fecha -->
+    
     <div class="filtro-fecha">
         <form method="get" action="estadisticas.php">
             <label for="fecha">Seleccionar Fecha:</label>
@@ -97,7 +97,7 @@ if (isset($_GET['exportar'])) {
         </form>
     </div>
 
-    <!-- Enlace para exportar a Excel (incluye la fecha seleccionada en el enlace) -->
+    
     <a href="estadisticas.php?exportar=1&fecha=<?= urlencode($fecha_seleccionada) ?>" class="btn-exportar">Descargar Excel</a>
 
     <table>
@@ -111,7 +111,7 @@ if (isset($_GET['exportar'])) {
                 <th>Precio Unitario</th>
                 <th>Subtotal</th>
                 <th>Estado</th>
-                <th>Cajero que entregó</th> <!-- Encabezado para el nombre del cajero -->
+                <th>Cajero que entregó</th> 
             </tr>
         </thead>
         <tbody>
@@ -125,7 +125,7 @@ if (isset($_GET['exportar'])) {
                     <td>$<?= number_format($v['costo'], 2) ?></td>
                     <td>$<?= number_format($v['subtotal'], 2) ?></td>
                     <td><?= htmlspecialchars($v['estado']) ?></td>
-                    <td><?= htmlspecialchars($v['nombre_cajero_entrega'] ?? 'N/A') ?></td> <!-- Muestra el nombre del cajero o 'N/A' -->
+                    <td><?= htmlspecialchars($v['nombre_cajero_entrega'] ?? 'N/A') ?></td> 
                 </tr>
             <?php endforeach; ?>
         </tbody>
