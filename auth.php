@@ -89,9 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="css/estilos.css" />
 </head>
 <body>
-<header>
-  <h1><?= $action === 'register' ? 'Registro de usuario' : 'Iniciar sesión' ?></h1>
-</header>
+<?php include 'includes/header.php'; ?>
 
 <section style="max-width: 400px; margin: auto; padding: 20px;">
   <?php if ($error): ?>

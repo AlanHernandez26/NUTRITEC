@@ -33,19 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-<header>
-    <h1>NutriTec</h1>
-    <nav>
-        <a href="index.php">Inicio</a>
-        <a href="quienes_somos.php">Quiénes Somos</a>
-        <a href="contacto.php">Contacto</a>
-        <?php if (isset($_SESSION['usuario'])): ?>
-            <a href="logout.php">Cerrar sesión</a>
-        <?php else: ?>
-            <a href="login.php">Iniciar sesión</a>
-        <?php endif; ?>
-    </nav>
-</header>
+<?php include 'includes/header.php'; ?>
 
 <section style="padding: 30px; max-width: 600px; margin: auto;">
     <h2>Quejas y Sugerencias</h2>

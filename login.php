@@ -50,9 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-<header>
-    <h1>Iniciar sesión</h1>
-</header>
+<?php include 'includes/header.php'; ?>
 
 <section class="form-login">
     <?php if ($error): ?>

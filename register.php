@@ -55,9 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-<header>
-    <h1>Registro de usuario</h1>
-</header>
+<?php include 'includes/header.php'; ?>
 
 <section>
     <?php if ($error): ?>

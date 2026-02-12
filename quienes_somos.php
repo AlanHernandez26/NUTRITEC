@@ -11,19 +11,7 @@ session_start();
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-<header>
-    <h1>NutriTec</h1>
-    <nav>
-        <a href="index.php">Inicio</a>
-        <a href="contacto.php">Contacto</a>
-        <a href="quejas.php">Quejas y sugerencias</a>
-        <?php if (isset($_SESSION['usuario'])): ?>
-            <a href="logout.php">Cerrar sesión</a>
-        <?php else: ?>
-            <a href="login.php">Iniciar sesión</a>
-        <?php endif; ?>
-    </nav>
-</header>
+<?php include 'includes/header.php'; ?>
 
 <section style="padding: 30px; max-width: 800px; margin: auto;">
     <h2>Quiénes Somos</h2>

@@ -365,3 +365,77 @@ header h1 {
     table th { display: none; }
     table td { padding: 0.6rem; border: 0; }
 }
+
+/* Logo / header styles */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 2rem; /* Un poco más de espacio a los lados */
+    background-color: #064420; /* El verde oscuro de tu fondo si quieres asegurar uniformidad */
+}
+
+.site-logo-link {
+    display: flex; 
+    align-items: center; 
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.site-logo-link:hover {
+    transform: scale(1.05); /* Efecto sutil al pasar el mouse */
+}
+
+.site-logo-img {
+    width: 20px !important; /* Aumenté un poco el tamaño para que sea legible */
+    height: auto !important;
+    max-width: 20px !important;
+    object-fit: contain;
+    display: block;
+    /* Eliminamos el border-radius si el logo es circular */
+}
+
+.site-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.8rem; /* ¡CORREGIDO! Antes estaba en 800px */
+    text-decoration: none;
+    margin-left: 1rem;
+    letter-spacing: 1px;
+}
+
+.main-nav {
+    display: flex;
+    gap: 1.5rem; /* Más espacio entre enlaces */
+    align-items: center;
+}
+
+.main-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+}
+
+.main-nav a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .site-title {
+        font-size: 1.4rem;
+        margin-left: 0;
+    }
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+}

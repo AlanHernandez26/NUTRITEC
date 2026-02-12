@@ -7,6 +7,7 @@ $carrito = $_SESSION['carrito'] ?? [];
 $total = 0;
 ?>
 
+<?php include 'includes/header.php'; ?>
 <h2>Carrito de compras</h2>
 <?php if (empty($carrito)): ?>
     <p>Tu carrito está vacío.</p>
