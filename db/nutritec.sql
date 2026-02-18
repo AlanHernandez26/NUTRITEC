@@ -31,7 +31,7 @@ CREATE TABLE pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     total DECIMAL(8, 2) NOT NULL,
-    metodo_pago ENUM('efectivo', 'transferencia', 'tarjeta') NOT NULL,
+    metodo_pago ENUM('efectivo', 'transferencia', 'tarjeta', 'paypal') NOT NULL,
     estado VARCHAR(20) DEFAULT 'pendiente',
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE

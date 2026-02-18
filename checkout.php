@@ -59,8 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Debes ingresar el número de referencia de transferencia.";
             exit;
         }
+    } elseif ($metodo_pago === 'paypal') {
+        $_SESSION['total'] = $total;
+        $_SESSION['productos'] = $productos;
+        header("Location: pasarela/index.php");
+        exit;
     } else {
-        
         $referencia = null;
     }
 
@@ -148,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <option value="efectivo">Efectivo</option>
         <option value="tarjeta">Tarjeta de débito/crédito</option>
         <option value="transferencia">Transferencia bancaria</option>
+        <option value="paypal">PayPal</option>
     </select>
 
     <div id="datos_tarjeta" style="display:none; margin-top:10px;">
